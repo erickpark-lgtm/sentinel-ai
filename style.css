@@ -818,6 +818,17 @@ code, pre, .mono {
   color: #cbd5e1;
 }
 
+/* Features Section & Heading Structure (STYLEX Standard) */
+.features-section {
+  padding: 110px 0;
+  position: relative;
+}
+
+.section-head {
+  text-align: center;
+  margin-bottom: 54px;
+}
+
 /* Comparison Table */
 .compare-table-box {
   background: var(--bg-surface);
@@ -825,6 +836,7 @@ code, pre, .mono {
   border-radius: var(--radius-lg);
   overflow: hidden;
   box-shadow: var(--shadow-card);
+  margin-top: 10px;
 }
 
 .compare-table {
