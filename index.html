@@ -1,0 +1,701 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>SentinelAI — 24/7 Autonomous vCISO & Continuous Compliance SaaS | sentinelvciso.com</title>
+  <meta name="description" content="Get SOC 2 Type 2 and ISO 27001 audit-ready on autopilot. SentinelAI connects to your GitHub and cloud infrastructure, audits security controls 24/7, and generates CPA-ready evidence for $499/month.">
+  <link rel="stylesheet" href="style.css">
+</head>
+<body>
+
+  <!-- Dynamic Aurora Ambient Light Mesh -->
+  <div class="aurora-bg">
+    <div class="aurora-blob-1"></div>
+    <div class="aurora-blob-2"></div>
+  </div>
+
+  <!-- Navigation Bar -->
+  <nav class="navbar">
+    <div class="container nav-container">
+      <a href="#" class="brand-logo" id="brand-logo-link">
+        <div class="brand-shield-icon">🛡️</div>
+        <span>Sentinel<span style="color: var(--primary-cyan-bright);">AI</span></span>
+      </a>
+      <ul class="nav-links">
+        <li><a href="#scanner" id="nav-scanner">Live Scanner</a></li>
+        <li><a href="#architecture" id="nav-architecture">Bento Architecture</a></li>
+        <li><a href="#comparison" id="nav-comparison">Vs Vanta & Drata</a></li>
+        <li><a href="#evidence" id="nav-evidence">Auditor Dossier</a></li>
+        <li><a href="#pricing" id="nav-pricing">Pricing</a></li>
+        <li><a href="#faq" id="nav-faq">FAQ</a></li>
+      </ul>
+      <a href="#scanner" class="nav-cta-btn" id="nav-cta-btn">Run Free Audit</a>
+    </div>
+  </nav>
+
+  <!-- Hero Section -->
+  <header class="hero">
+    <div class="container">
+      <div class="badge-pill">
+        <span class="pulse-dot"></span>
+        <span>AI-Native vCISO Engine Active • SOC 2 Type 2 & ISO 27001 Ready</span>
+      </div>
+
+      <h1 class="hero-title">
+        The 24/7 Autonomous vCISO.<br>
+        <span class="hero-title-highlight">Audit-Ready for $499/mo, Not $30,000.</span>
+      </h1>
+
+      <p class="hero-subtitle">
+        Stop wasting hundreds of engineering hours taking manual screenshots for legacy GRC tools. SentinelAI connects to your GitHub and Cloud APIs, audits your controls 24/7, and auto-generates Big-4 ready audit registers without human intervention.
+      </p>
+
+      <!-- Floating Live Telemetry Badges -->
+      <div class="hero-floating-badges">
+        <div class="float-badge">
+          <span class="live-indicator"></span>
+          <span>Continuous Sentinel Active • Latency 14ms</span>
+        </div>
+        <div class="float-badge">
+          <span>🔒 Zero-Trace Read-Only APIs</span>
+        </div>
+        <div class="float-badge">
+          <span>📋 AICPA Common Criteria CC9.2 Compliant</span>
+        </div>
+      </div>
+
+      <div class="hero-actions">
+        <a href="#scanner" class="btn-primary" id="hero-btn-scan">
+          <span>⚡ Run Instant Free Audit</span>
+        </a>
+        <button class="btn-secondary" id="hero-btn-evidence">
+          <span>📄 View Auditor Dossier</span>
+        </button>
+      </div>
+
+      <!-- Social / Compliance Proof Strip -->
+      <div class="proof-strip">
+        <div class="proof-item">
+          <svg width="18" height="18" fill="currentColor" viewBox="0 0 20 20"><path fill-rule="evenodd" d="M16.707 5.293a1 1 0 010 1.414l-8 8a1 1 0 01-1.414 0l-4-4a1 1 0 011.414-1.414L8 12.586l7.293-7.293a1 1 0 011.414 0z" clip-rule="evenodd"></path></svg>
+          <span>AICPA SOC 2 Type 2 Mapped</span>
+        </div>
+        <div class="proof-item">
+          <svg width="18" height="18" fill="currentColor" viewBox="0 0 20 20"><path fill-rule="evenodd" d="M16.707 5.293a1 1 0 010 1.414l-8 8a1 1 0 01-1.414 0l-4-4a1 1 0 011.414-1.414L8 12.586l7.293-7.293a1 1 0 011.414 0z" clip-rule="evenodd"></path></svg>
+          <span>ISO/IEC 27001:2022 Verified</span>
+        </div>
+        <div class="proof-item">
+          <svg width="18" height="18" fill="currentColor" viewBox="0 0 20 20"><path fill-rule="evenodd" d="M16.707 5.293a1 1 0 010 1.414l-8 8a1 1 0 01-1.414 0l-4-4a1 1 0 011.414-1.414L8 12.586l7.293-7.293a1 1 0 011.414 0z" clip-rule="evenodd"></path></svg>
+          <span>Zero-Trace Read-Only APIs</span>
+        </div>
+        <div class="proof-item">
+          <svg width="18" height="18" fill="currentColor" viewBox="0 0 20 20"><path fill-rule="evenodd" d="M16.707 5.293a1 1 0 010 1.414l-8 8a1 1 0 01-1.414 0l-4-4a1 1 0 011.414-1.414L8 12.586l7.293-7.293a1 1 0 011.414 0z" clip-rule="evenodd"></path></svg>
+          <span>CPA Audit-Ready Evidence</span>
+        </div>
+      </div>
+
+      <!-- Key Impact Metrics Strip (STYLEX Elevation) -->
+      <div class="metrics-grid">
+        <div class="metric-card">
+          <div class="metric-val" style="color: var(--accent-emerald);">$18,200+</div>
+          <div class="metric-title">Avg. Savings vs Legacy GRC</div>
+          <div class="metric-desc">Eliminates upfront $25K lock-in & consulting overhead</div>
+        </div>
+        <div class="metric-card">
+          <div class="metric-val" style="color: var(--primary-cyan-bright);">100%</div>
+          <div class="metric-title">CPA Audit Pass Rate</div>
+          <div class="metric-desc">AICPA TSC CC1–CC9 compliant evidence dossiers</div>
+        </div>
+        <div class="metric-card">
+          <div class="metric-val" style="color: #a855f7;">14 ms</div>
+          <div class="metric-title">Continuous Sentinel Latency</div>
+          <div class="metric-desc">Real-time webhook drift detection & alerting</div>
+        </div>
+        <div class="metric-card">
+          <div class="metric-val" style="color: #38bdf8;">&lt; 5 Mins</div>
+          <div class="metric-title">Zero-Trace Read-Only Setup</div>
+          <div class="metric-desc">No intrusive agents installed on your production servers</div>
+        </div>
+      </div>
+    </div>
+  </header>
+
+  <!-- Interactive Scanner Console Section -->
+  <section id="scanner" class="scanner-section">
+    <div class="container">
+      <div class="scanner-box">
+        <div class="scanner-header">
+          <div class="window-dots">
+            <div class="window-dot dot-red"></div>
+            <div class="window-dot dot-yellow"></div>
+            <div class="window-dot dot-green"></div>
+          </div>
+          <div class="window-title">sentinel-compliance-sentinel --mode=continuous-audit</div>
+          <div style="font-size: 0.75rem; color: var(--accent-emerald); font-weight: 800; letter-spacing: 0.5px;">● 24/7 SENTINEL LIVE</div>
+        </div>
+
+        <div class="scanner-body">
+          <div class="scanner-input-row">
+            <div class="repo-input-wrap">
+              <span class="repo-prefix">github.com/</span>
+              <input type="text" class="repo-input" id="repo-input" placeholder="your-org/repository" value="connex-system/core-backend">
+            </div>
+            <button class="btn-scan" id="btn-scan">Scan Repository</button>
+          </div>
+
+          <div class="scanner-presets">
+            <span>Try sample targets:</span>
+            <button class="preset-chip" data-repo="connex-system/core-backend">connex-system/core-backend (Audit Ready)</button>
+            <button class="preset-chip" data-repo="fintech-pilot/api-server">fintech-pilot/api-server (Gaps Detected)</button>
+          </div>
+
+          <!-- Animated Scan Terminal Logs -->
+          <div class="scan-terminal" id="scan-terminal">
+            <div id="terminal-logs"></div>
+          </div>
+
+          <!-- Audit Results Grid -->
+          <div class="results-grid" id="scan-results">
+            <div class="score-card">
+              <div class="score-circle">
+                <div class="score-num" id="score-num">94</div>
+                <div class="score-label">SOC 2 Score</div>
+              </div>
+              <h3 style="font-size: 1.2rem; margin-bottom: 4px;">Audit Readiness</h3>
+              <p style="font-size: 0.82rem; color: var(--text-dim); margin-bottom: 14px;">Based on AICPA TSC Common Criteria</p>
+              <span class="score-status-badge tag-pass" id="score-badge">SOC 2 Type 2 Audit Ready</span>
+            </div>
+
+            <div class="audit-checklist" id="checklist-container">
+              <!-- Dynamically populated via app.js -->
+              <div class="check-item">
+                <div class="check-meta">
+                  <span class="check-code">CC6.1</span>
+                  <div>
+                    <div class="check-name">Identity & Access Management (MFA)</div>
+                    <div class="check-desc">Hardware MFA enforced via Google Workspace & GCP IAM</div>
+                  </div>
+                </div>
+                <span class="status-tag tag-pass">PASS</span>
+              </div>
+              <div class="check-item">
+                <div class="check-meta">
+                  <span class="check-code">CC6.6</span>
+                  <div>
+                    <div class="check-name">Network Encryption In-Transit</div>
+                    <div class="check-desc">TLS 1.3 enforced on all ALB ingress endpoints; zero TLS 1.0/1.1 traffic</div>
+                  </div>
+                </div>
+                <span class="status-tag tag-pass">PASS</span>
+              </div>
+              <div class="check-item">
+                <div class="check-meta">
+                  <span class="check-code">CC7.1</span>
+                  <div>
+                    <div class="check-name">Vulnerability Management</div>
+                    <div class="check-desc">Dependabot & Trivy scanners running in CI/CD pipeline; 0 Critical CVEs</div>
+                  </div>
+                </div>
+                <span class="status-tag tag-pass">PASS</span>
+              </div>
+              <div class="check-item">
+                <div class="check-meta">
+                  <span class="check-code">CC8.1</span>
+                  <div>
+                    <div class="check-name">Branch Protection & Peer Reviews</div>
+                    <div class="check-desc">Main branch requires 1+ peer review approval & signed commits</div>
+                  </div>
+                </div>
+                <span class="status-tag tag-pass">PASS</span>
+              </div>
+              <div class="check-item">
+                <div class="check-meta">
+                  <span class="check-code">CC9.2</span>
+                  <div>
+                    <div class="check-name">Third-Party Vendor Risk & CUEC Mapping</div>
+                    <div class="check-desc">Google Cloud & GitHub SOC 2 Type 2 reports collected & CUEC verified</div>
+                  </div>
+                </div>
+                <span class="status-tag tag-pass">PASS</span>
+              </div>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <!-- ════════════════════════════════════════════════════════════════════════════════
+       BENTO GRID ARCHITECTURE (Pinterest / Linear Layout)
+       ════════════════════════════════════════════════════════════════════════════════ -->
+  <section id="architecture" class="bento-section">
+    <div class="container">
+      <div style="text-align: center; margin-bottom: 40px;">
+        <div class="badge-pill">
+          <span>⚡ BENTO ARCHITECTURE</span>
+        </div>
+        <h2 style="font-size: 2.8rem; font-weight: 900; margin-bottom: 12px;">Engineered for 100% Autonomy</h2>
+        <p style="color: var(--text-muted); font-size: 1.15rem; max-width: 680px; margin: 0 auto;">
+          How SentinelAI replaces an entire compliance consulting firm with four specialized autonomous agents.
+        </p>
+      </div>
+
+      <div class="bento-grid">
+        <!-- Card 1: Continuous Code Sentinel (Large) -->
+        <div class="bento-card bento-card-large">
+          <div class="bento-icon">🔍</div>
+          <h3 class="bento-title">Continuous Code & Branch Sentinel</h3>
+          <p class="bento-desc">
+            Connects via GitHub read-only webhooks. Enforces that no code merges into production without verified peer reviews, secret scanning, and automated Dependabot passing checks.
+          </p>
+          <div class="bento-visual-terminal">
+            <span style="color: var(--accent-emerald);">✔ main-branch-protection:</span> required_approving_review_count = 1<br>
+            <span style="color: var(--accent-emerald);">✔ secret-scan-detector:</span> 0 leaked API keys in git history<br>
+            <span style="color: var(--primary-cyan-bright);">ℹ status:</span> Continuous audit hook verified across 14 repositories
+          </div>
+        </div>
+
+        <!-- Card 2: Zero-Trace Cloud Telemetry -->
+        <div class="bento-card">
+          <div class="bento-icon">☁️</div>
+          <h3 class="bento-title">Cloud IAM & TLS Telemetry</h3>
+          <p class="bento-desc">
+            Audits AWS IAM Identity Center and GCP projects. Automatically flags inactive root accounts, missing hardware MFA, and weak TLS 1.0/1.1 connections.
+          </p>
+          <div class="bento-visual-gauge">
+            <div>
+              <div style="font-size: 0.75rem; color: var(--text-dim); text-transform: uppercase;">MFA Compliance</div>
+              <div style="font-size: 1.6rem; font-weight: 800; color: var(--accent-emerald);">100%</div>
+            </div>
+            <div>
+              <div style="font-size: 0.75rem; color: var(--text-dim); text-transform: uppercase;">TLS Cipher</div>
+              <div style="font-size: 1.6rem; font-weight: 800; color: var(--primary-cyan-bright);">v1.3 Only</div>
+            </div>
+          </div>
+        </div>
+
+        <!-- Card 3: CUEC Vendor Compiler -->
+        <div class="bento-card">
+          <div class="bento-icon">📑</div>
+          <h3 class="bento-title">CUEC Auto-Compiler (CC9.2)</h3>
+          <p class="bento-desc">
+            Parses SOC 2 Type 2 reports from Google Cloud, GitHub, and AWS. Automatically extracts Complementary User Entity Controls (CUECs) and maps them to your internal policies.
+          </p>
+          <div style="margin-top: 20px; font-size: 0.8rem; background: #060913; padding: 12px; border-radius: 8px; border: 1px solid var(--border-subtle);">
+            <span style="color: var(--primary-cyan-bright); font-weight: bold;">GCP CUEC extracted:</span> Enforce logical access separation & audit log forwarding.
+          </div>
+        </div>
+
+        <!-- Card 4: Audit-Ready Dossier Engine (Large) -->
+        <div class="bento-card bento-card-large">
+          <div class="bento-icon">🏛️</div>
+          <h3 class="bento-title">Automated Big-4 CPA Evidence Dossier</h3>
+          <p class="bento-desc">
+            No more messy spreadsheets or scrambling before audit season. On the 1st of every month, SentinelAI autonomously compiles an audit-ready, cryptographically stamped PDF Evidence Package formatted exactly to AICPA standards.
+          </p>
+          <div style="display: flex; gap: 14px; margin-top: 20px;">
+            <div style="background: #060913; padding: 12px 16px; border-radius: 8px; border: 1px solid var(--border-subtle); flex: 1;">
+              <span style="color: var(--accent-emerald); font-weight: bold;">✓ CC9.2</span> Vendor Assessment Register
+            </div>
+            <div style="background: #060913; padding: 12px 16px; border-radius: 8px; border: 1px solid var(--border-subtle); flex: 1;">
+              <span style="color: var(--accent-emerald); font-weight: bold;">✓ CC6.1</span> Quarterly Access Review Log
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <!-- Comparison Section: SentinelAI vs Legacy GRC -->
+  <section id="comparison" class="features-section" style="padding-top: 20px;">
+    <div class="container">
+      <div class="section-head">
+        <h2 style="font-size: 2.8rem; font-weight: 900; margin-bottom: 12px;">Why Founders Are Ditching Legacy GRC</h2>
+        <p style="color: var(--text-muted); font-size: 1.15rem;">Compare SentinelAI's autonomous architecture with traditional compliance software.</p>
+      </div>
+
+      <div class="compare-table-box">
+        <table class="compare-table">
+          <thead>
+            <tr>
+              <th style="width: 34%;">Feature / Capability</th>
+              <th style="width: 33%;">Legacy GRC (Vanta, Drata)</th>
+              <th style="width: 33%;" class="highlight">SentinelAI (Autonomous vCISO)</th>
+            </tr>
+          </thead>
+          <tbody>
+            <tr>
+              <td><strong>Annual Contract Overhead</strong></td>
+              <td>$15,000 – $35,000 / year (Upfront Lock-in)</td>
+              <td class="highlight"><span style="color: var(--accent-emerald); font-weight: 800; font-size: 1.1rem;">$499 / month</span> (Cancel Anytime)</td>
+            </tr>
+            <tr>
+              <td><strong>Evidence Collection Method</strong></td>
+              <td>Manual dashboard uploads & human screenshotting</td>
+              <td class="highlight"><span style="color: var(--primary-cyan-bright); font-weight: 800;">100% Autonomous</span> via Read-Only APIs</td>
+            </tr>
+            <tr>
+              <td><strong>CUEC Vendor Mapping (CC9.2)</strong></td>
+              <td>Manual vendor risk questionnaire forms</td>
+              <td class="highlight">Automated CUEC extraction from Cloud reports</td>
+            </tr>
+            <tr>
+              <td><strong>Audit Document Generation</strong></td>
+              <td>Messy zip files requiring consultant formatting</td>
+              <td class="highlight">One-Click AICPA Formatted PDF Registers</td>
+            </tr>
+            <tr>
+              <td><strong>Setup & Onboarding Time</strong></td>
+              <td>4 to 8 weeks with consulting calls</td>
+              <td class="highlight"><span style="color: var(--accent-emerald); font-weight: bold;">Under 5 Minutes</span> via OAuth Connect</td>
+            </tr>
+          </tbody>
+        </table>
+      </div>
+    </div>
+  </section>
+
+  <!-- Live Evidence Dossier Showcase (High-Tech Dark Mode) -->
+  <section id="evidence" class="features-section">
+    <div class="container">
+      <div class="section-head">
+        <h2 style="font-size: 2.8rem; font-weight: 900; margin-bottom: 12px;">Audit-Ready Evidence Dossier</h2>
+        <p style="color: var(--text-muted); font-size: 1.15rem;">Inspect the actual AICPA CC9.2 Third-Party Vendor Risk Assessment Register compiled by SentinelAI.</p>
+      </div>
+
+      <div class="dossier-box">
+        <div class="dossier-header">
+          <div>
+            <h3 style="color: #ffffff; font-size: 1.4rem; margin-bottom: 6px;">Third-Party Vendor Security Assessment Register</h3>
+            <div style="color: var(--text-muted); font-size: 0.88rem;">Compiled Autonomously for CPA Examination • Doc ID: <span class="mono" style="color: var(--primary-cyan-bright);">SOC2-VR-FORM-001</span></div>
+          </div>
+          <div class="dossier-seal-badge">
+            <span>🛡️</span>
+            <span>AICPA CC9.2 VERIFIED</span>
+          </div>
+        </div>
+
+        <table class="dossier-table">
+          <thead>
+            <tr>
+              <th>Vendor Name</th>
+              <th>Risk Tier</th>
+              <th>Verified Certification</th>
+              <th>CUEC Internal Controls Mapped</th>
+              <th>Status</th>
+            </tr>
+          </thead>
+          <tbody>
+            <tr>
+              <td style="font-weight: 700; color: #ffffff;">Google Cloud Platform</td>
+              <td><span style="color: #ef4444; font-weight: bold; background: rgba(239, 68, 68, 0.1); padding: 3px 8px; border-radius: 4px;">Tier 1 (High)</span></td>
+              <td>SOC 2 Type 2 / ISO 27001</td>
+              <td>GCP IAM SSO + Hardware MFA Enforced</td>
+              <td><span style="color: var(--accent-emerald); font-weight: 800;">● VERIFIED</span></td>
+            </tr>
+            <tr>
+              <td style="font-weight: 700; color: #ffffff;">GitHub Enterprise</td>
+              <td><span style="color: #ef4444; font-weight: bold; background: rgba(239, 68, 68, 0.1); padding: 3px 8px; border-radius: 4px;">Tier 1 (High)</span></td>
+              <td>SOC 2 Type 2 / ISO 27001</td>
+              <td>Branch Protection + 1+ Peer Review Rule</td>
+              <td><span style="color: var(--accent-emerald); font-weight: 800;">● VERIFIED</span></td>
+            </tr>
+            <tr>
+              <td style="font-weight: 700; color: #ffffff;">Google Workspace</td>
+              <td><span style="color: #f59e0b; font-weight: bold; background: rgba(245, 158, 11, 0.1); padding: 3px 8px; border-radius: 4px;">Tier 2 (Med)</span></td>
+              <td>SOC 2 Type 2 / ISO 27001</td>
+              <td>24-Hour Offboarding SLA & Password Policy</td>
+              <td><span style="color: var(--accent-emerald); font-weight: 800;">● VERIFIED</span></td>
+            </tr>
+          </tbody>
+        </table>
+        
+        <div style="display: flex; justify-content: space-between; align-items: center; border-top: 1px solid var(--border-subtle); padding-top: 20px;">
+          <span style="font-size: 0.85rem; color: var(--text-dim);">Cryptographically timestamped by Sentinel Autonomous Sentinel Engine</span>
+          <a href="#scanner" class="btn-primary" style="padding: 10px 20px; font-size: 0.9rem;" id="btn-export-preview">
+            <span>📥 Generate My Organization's PDF Register</span>
+          </a>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <!-- Pricing Section -->
+  <section id="pricing" class="pricing-section">
+    <div class="container">
+      <div class="section-head">
+        <h2 style="font-size: 2.8rem; font-weight: 900; margin-bottom: 12px;">Transparent, Self-Serve Pricing</h2>
+        <p style="color: var(--text-muted); font-size: 1.15rem;">No sales reps. No mandatory annual contracts. Zero hidden implementation fees.</p>
+      </div>
+
+      <div class="pricing-grid">
+        <!-- Starter Plan -->
+        <div class="pricing-card featured">
+          <div class="plan-badge">Most Popular for Seed / Series A</div>
+          <div class="plan-name">Starter vCISO</div>
+          <div class="plan-desc">For early-stage startups needing SOC 2 or ISO 27001 to close enterprise customer deals.</div>
+          <div class="plan-price-wrap">
+            <span class="price-currency">$</span>
+            <span class="price-val">499</span>
+            <span class="price-period">/ month</span>
+          </div>
+          <ul class="plan-features">
+            <li>
+              <svg width="18" height="18" fill="currentColor" viewBox="0 0 20 20"><path fill-rule="evenodd" d="M16.707 5.293a1 1 0 010 1.414l-8 8a1 1 0 01-1.414 0l-4-4a1 1 0 011.414-1.414L8 12.586l7.293-7.293a1 1 0 011.414 0z" clip-rule="evenodd"></path></svg>
+              <span>GitHub Organization Continuous Audit (Up to 10 repos)</span>
+            </li>
+            <li>
+              <svg width="18" height="18" fill="currentColor" viewBox="0 0 20 20"><path fill-rule="evenodd" d="M16.707 5.293a1 1 0 010 1.414l-8 8a1 1 0 01-1.414 0l-4-4a1 1 0 011.414-1.414L8 12.586l7.293-7.293a1 1 0 011.414 0z" clip-rule="evenodd"></path></svg>
+              <span>Single Cloud Provider Integration (AWS or GCP)</span>
+            </li>
+            <li>
+              <svg width="18" height="18" fill="currentColor" viewBox="0 0 20 20"><path fill-rule="evenodd" d="M16.707 5.293a1 1 0 010 1.414l-8 8a1 1 0 01-1.414 0l-4-4a1 1 0 011.414-1.414L8 12.586l7.293-7.293a1 1 0 011.414 0z" clip-rule="evenodd"></path></svg>
+              <span>AICPA CC9.2 Vendor Risk Assessment Register (PDF)</span>
+            </li>
+            <li>
+              <svg width="18" height="18" fill="currentColor" viewBox="0 0 20 20"><path fill-rule="evenodd" d="M16.707 5.293a1 1 0 010 1.414l-8 8a1 1 0 01-1.414 0l-4-4a1 1 0 011.414-1.414L8 12.586l7.293-7.293a1 1 0 011.414 0z" clip-rule="evenodd"></path></svg>
+              <span>Quarterly Access Review Automated Register</span>
+            </li>
+            <li>
+              <svg width="18" height="18" fill="currentColor" viewBox="0 0 20 20"><path fill-rule="evenodd" d="M16.707 5.293a1 1 0 010 1.414l-8 8a1 1 0 01-1.414 0l-4-4a1 1 0 011.414-1.414L8 12.586l7.293-7.293a1 1 0 011.414 0z" clip-rule="evenodd"></path></svg>
+              <span>Cancel Anytime with 1 Click</span>
+            </li>
+          </ul>
+          <button class="btn-plan btn-plan-featured" data-plan="Starter" data-price="$499" id="btn-plan-starter">
+            Start 14-Day Free Trial
+          </button>
+        </div>
+
+        <!-- Growth Plan -->
+        <div class="pricing-card">
+          <div class="plan-name">Growth / Multi-Cloud</div>
+          <div class="plan-desc">For fast-scaling companies requiring multi-cloud compliance and custom policy-as-code suites.</div>
+          <div class="plan-price-wrap">
+            <span class="price-currency">$</span>
+            <span class="price-val">999</span>
+            <span class="price-period">/ month</span>
+          </div>
+          <ul class="plan-features">
+            <li>
+              <svg width="18" height="18" fill="currentColor" viewBox="0 0 20 20"><path fill-rule="evenodd" d="M16.707 5.293a1 1 0 010 1.414l-8 8a1 1 0 01-1.414 0l-4-4a1 1 0 011.414-1.414L8 12.586l7.293-7.293a1 1 0 011.414 0z" clip-rule="evenodd"></path></svg>
+              <span>Unlimited GitHub Repositories & CI/CD Pipelines</span>
+            </li>
+            <li>
+              <svg width="18" height="18" fill="currentColor" viewBox="0 0 20 20"><path fill-rule="evenodd" d="M16.707 5.293a1 1 0 010 1.414l-8 8a1 1 0 01-1.414 0l-4-4a1 1 0 011.414-1.414L8 12.586l7.293-7.293a1 1 0 011.414 0z" clip-rule="evenodd"></path></svg>
+              <span>Multi-Cloud Continuous Auditing (AWS + GCP + Azure)</span>
+            </li>
+            <li>
+              <svg width="18" height="18" fill="currentColor" viewBox="0 0 20 20"><path fill-rule="evenodd" d="M16.707 5.293a1 1 0 010 1.414l-8 8a1 1 0 01-1.414 0l-4-4a1 1 0 011.414-1.414L8 12.586l7.293-7.293a1 1 0 011.414 0z" clip-rule="evenodd"></path></svg>
+              <span>Real-Time Slack Security Sentinel & Alert Bot</span>
+            </li>
+            <li>
+              <svg width="18" height="18" fill="currentColor" viewBox="0 0 20 20"><path fill-rule="evenodd" d="M16.707 5.293a1 1 0 010 1.414l-8 8a1 1 0 01-1.414 0l-4-4a1 1 0 011.414-1.414L8 12.586l7.293-7.293a1 1 0 011.414 0z" clip-rule="evenodd"></path></svg>
+              <span>Automated CUEC 벤더 증적 무제한 다운로드</span>
+            </li>
+            <li>
+              <svg width="18" height="18" fill="currentColor" viewBox="0 0 20 20"><path fill-rule="evenodd" d="M16.707 5.293a1 1 0 010 1.414l-8 8a1 1 0 01-1.414 0l-4-4a1 1 0 011.414-1.414L8 12.586l7.293-7.293a1 1 0 011.414 0z" clip-rule="evenodd"></path></svg>
+              <span>Dedicated Big-4 Certified Compliance Architect Hotline</span>
+            </li>
+          </ul>
+          <button class="btn-plan btn-plan-outline" data-plan="Growth" data-price="$999" id="btn-plan-growth">
+            Activate Growth Suite
+          </button>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <!-- FAQ Section (STYLEX Architected) -->
+  <section id="faq" class="faq-section">
+    <div class="container">
+      <div class="section-head">
+        <div class="badge-pill">
+          <span>❓ FREQUENTLY ASKED QUESTIONS</span>
+        </div>
+        <h2 style="font-size: 2.8rem; font-weight: 900; margin-bottom: 12px;">Everything Founders Need to Know</h2>
+        <p style="color: var(--text-muted); font-size: 1.15rem; max-width: 680px; margin: 0 auto;">
+          Straight answers on how SentinelAI delivers enterprise-grade SOC 2 Type 2 compliance at 80% lower cost.
+        </p>
+      </div>
+
+      <div class="faq-accordion">
+        <div class="faq-item">
+          <button class="faq-trigger" aria-expanded="false">
+            <span class="faq-question">How can SentinelAI offer full SOC 2 compliance for $499/mo while Vanta and Drata charge $20,000+?</span>
+            <span class="faq-icon">+</span>
+          </button>
+          <div class="faq-content">
+            <p>Legacy GRC platforms carry massive enterprise sales commissions, bloated customer success departments, and expensive marketing costs that get passed directly to you as mandatory annual contracts. SentinelAI is built natively on modern cloud APIs and autonomous agents—we don't charge you for human middleman overhead. You get the exact same AICPA-compliant continuous evidence collection at true software infrastructure cost.</p>
+          </div>
+        </div>
+
+        <div class="faq-item">
+          <button class="faq-trigger" aria-expanded="false">
+            <span class="faq-question">Will Big-4 and specialized CPA audit firms actually accept SentinelAI's Evidence Dossier?</span>
+            <span class="faq-icon">+</span>
+          </button>
+          <div class="faq-content">
+            <p>Yes, 100%. AICPA Trust Services Criteria (TSC) do not care which software logo is on your dashboard—auditors care strictly about objective, tamper-evident proof of operational controls over time. SentinelAI compiles evidence into standardized, cryptographically timestamped PDF registers and CSV logs (e.g. CC9.2 Vendor Risk, CC6.1 Quarterly Access Review, CC8.1 Change Management PR audit trails) mapped directly to AICPA criteria that auditors review and sign off on effortlessly.</p>
+          </div>
+        </div>
+
+        <div class="faq-item">
+          <button class="faq-trigger" aria-expanded="false">
+            <span class="faq-question">Does SentinelAI require installing intrusive agent software on our production servers?</span>
+            <span class="faq-icon">+</span>
+          </button>
+          <div class="faq-content">
+            <p>No. SentinelAI operates 100% agentless via Zero-Trace Read-Only APIs and webhooks (GitHub App, AWS CloudTrail/IAM, Google Cloud IAM). We never install background daemons on your servers, and our API credentials only have read permissions—meaning SentinelAI has zero access to your customers' data or application database records.</p>
+          </div>
+        </div>
+
+        <div class="faq-item">
+          <button class="faq-trigger" aria-expanded="false">
+            <span class="faq-question">An enterprise customer just asked for our SOC 2 Type 2 before signing. How quickly can we be audit-ready?</span>
+            <span class="faq-icon">+</span>
+          </button>
+          <div class="faq-content">
+            <p>With SentinelAI, you can connect your stack in under 5 minutes and immediately run your baseline audit. Our policy generator automatically outputs all 15 required SOC 2 information security policies within 24 hours. For SOC 2 Type 1 (point-in-time design effectiveness), you can be ready for auditor examination in under 7 days. For Type 2, SentinelAI continuously captures continuous evidence across your 3-to-6 month observation period on autopilot.</p>
+          </div>
+        </div>
+
+        <div class="faq-item">
+          <button class="faq-trigger" aria-expanded="false">
+            <span class="faq-question">Can we cancel our subscription after completing our annual audit?</span>
+            <span class="faq-icon">+</span>
+          </button>
+          <div class="faq-content">
+            <p>Unlike legacy GRC vendors who lock you into non-refundable annual contracts, SentinelAI offers true monthly billing with 1-click cancellation. While most fast-growing startups keep SentinelAI active 24/7 to maintain continuous compliance and satisfy enterprise vendor reviews year-round, you are never held hostage to an unwanted contract.</p>
+          </div>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <!-- Stripe Checkout Simulation Modal -->
+  <div class="modal-overlay" id="modal-overlay">
+    <div class="modal-card">
+      <button class="modal-close" id="modal-close">&times;</button>
+      <div style="display: flex; align-items: center; gap: 10px; margin-bottom: 14px;">
+        <div class="brand-shield-icon" style="width: 30px; height: 30px; font-size: 15px;">🛡️</div>
+        <span style="font-weight: 800; font-size: 1.2rem;">SentinelAI Checkout</span>
+      </div>
+      <h3 class="modal-title" id="modal-plan-name">Starter Plan</h3>
+      <p class="modal-subtitle">14-day free trial, then billed monthly. Cancel anytime.</p>
+
+      <div class="checkout-summary">
+        <div class="summary-row">
+          <span style="color: var(--text-muted);">Subscription:</span>
+          <span id="modal-plan-price">$499 / month</span>
+        </div>
+        <div class="summary-row">
+          <span style="color: var(--text-muted);">Trial Period:</span>
+          <span style="color: var(--accent-emerald); font-weight: 700;">14 Days (Free)</span>
+        </div>
+        <div class="summary-row">
+          <span>Due Today:</span>
+          <span>$0.00</span>
+        </div>
+      </div>
+
+      <div style="margin-bottom: 22px;">
+        <label style="display: block; font-size: 0.82rem; color: var(--text-muted); margin-bottom: 8px;">Work Email</label>
+        <input type="email" value="founder@startup.com" style="width: 100%; background: #060913; border: 1px solid var(--border-subtle); border-radius: 8px; padding: 12px 14px; color: #ffffff; font-size: 0.95rem; outline: none;">
+      </div>
+
+      <button class="btn-primary" style="width: 100%; justify-content: center;" id="btn-checkout-confirm">
+        <span>🔒 Complete Instant Activation</span>
+      </button>
+      <div style="text-align: center; margin-top: 14px; font-size: 0.78rem; color: var(--text-dim);">
+        Secured by Stripe Billing • 256-bit SSL Encryption
+      </div>
+    </div>
+  </div>
+
+  <!-- Interactive Audit Dossier Preview Modal -->
+  <div class="modal-overlay" id="dossier-modal-overlay">
+    <div class="modal-card dossier-modal-card">
+      <button class="modal-close" id="dossier-modal-close">&times;</button>
+      <div style="display: flex; align-items: center; justify-content: space-between; margin-bottom: 16px; border-bottom: 1px solid var(--border-subtle); padding-bottom: 12px;">
+        <div style="display: flex; align-items: center; gap: 10px;">
+          <div class="brand-shield-icon" style="width: 32px; height: 32px; font-size: 16px;">📜</div>
+          <div>
+            <h3 style="margin: 0; font-size: 1.15rem; color: #ffffff;">AICPA Audit Evidence Dossier</h3>
+            <span style="font-size: 0.78rem; color: var(--text-dim);">Doc ID: SOC2-TYPE2-DOSSIER-2026Q3 • SHA-256 Tamper-Proof</span>
+          </div>
+        </div>
+        <span class="score-status-badge tag-pass" style="font-size: 0.75rem;">AUDIT CERTIFIED</span>
+      </div>
+
+      <div class="dossier-modal-body">
+        <div class="dossier-preview-page">
+          <div class="dossier-watermark">CPA AUDIT READY</div>
+          <div class="dossier-preview-header">
+            <h4>INDEPENDENT SERVICE AUDITOR'S EVIDENCE REGISTER</h4>
+            <p>Evaluation of Design & Operating Effectiveness of Controls</p>
+          </div>
+          <div class="dossier-preview-meta">
+            <div><strong>Entity Name:</strong> Connex Technologies, Inc. (Delaware C-Corp)</div>
+            <div><strong>Audit Observation Period:</strong> April 1, 2026 – September 30, 2026</div>
+            <div><strong>Governing Criteria:</strong> AICPA TSC CC1.1 – CC9.2 (Security & Availability)</div>
+          </div>
+          <div class="dossier-preview-sample-table">
+            <div class="dossier-table-row dossier-th">
+              <span>Control Ref</span>
+              <span>Test Result</span>
+              <span>Sample Population</span>
+              <span>Deviations</span>
+            </div>
+            <div class="dossier-table-row">
+              <span>CC6.1 IAM Hardware MFA</span>
+              <span style="color: var(--accent-emerald); font-weight: bold;">PASS</span>
+              <span>100% (24/24 Users)</span>
+              <span>0 Found</span>
+            </div>
+            <div class="dossier-table-row">
+              <span>CC6.6 In-Transit TLS 1.3</span>
+              <span style="color: var(--accent-emerald); font-weight: bold;">PASS</span>
+              <span>1,240,910 Conn</span>
+              <span>0 Found</span>
+            </div>
+            <div class="dossier-table-row">
+              <span>CC7.1 Vulnerability Scan</span>
+              <span style="color: var(--accent-emerald); font-weight: bold;">PASS</span>
+              <span>Weekly CI Scans</span>
+              <span>0 Criticals</span>
+            </div>
+            <div class="dossier-table-row">
+              <span>CC8.1 Change Peer Review</span>
+              <span style="color: var(--accent-emerald); font-weight: bold;">PASS</span>
+              <span>428 PR Merges</span>
+              <span>0 Found</span>
+            </div>
+          </div>
+        </div>
+      </div>
+
+      <div style="display: flex; gap: 12px; margin-top: 20px;">
+        <button class="btn-primary" style="flex: 1; justify-content: center;" id="btn-download-dossier-sample">
+          <span>📥 Download Full Signed PDF Package</span>
+        </button>
+        <button class="btn-secondary" style="padding: 12px 20px;" id="btn-close-dossier">
+          Close
+        </button>
+      </div>
+    </div>
+  </div>
+
+  <!-- Footer -->
+  <footer>
+    <div class="container">
+      <div style="margin-bottom: 16px; font-weight: 800; color: #ffffff; font-size: 1.05rem;">
+        SentinelAI — Continuous Autonomous Compliance Platform
+      </div>
+      <p style="margin-bottom: 10px; color: var(--text-muted);">A Summit Operations Consulting Venture • Contact: <a href="mailto:support@sentinelvciso.com" style="color: var(--primary-cyan-bright); text-decoration: none;">support@sentinelvciso.com</a></p>
+      <p style="font-size: 0.8rem; color: var(--text-dim);">© 2026 SentinelAI. Powered by Summit Operations Consulting. All rights reserved.</p>
+    </div>
+  </footer>
+
+  <script src="app.js"></script>
+</body>
+</html>
