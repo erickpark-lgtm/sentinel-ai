@@ -865,15 +865,15 @@ code, pre, .mono {
 
 /* Pricing Cards */
 .pricing-section {
-  padding: 80px 0 120px 0;
+  padding: 100px 0 120px 0;
 }
 
 .pricing-grid {
   display: grid;
   grid-template-columns: repeat(2, 1fr);
-  gap: 32px;
+  gap: 36px;
   max-width: 980px;
-  margin: 0 auto;
+  margin: 64px auto 0 auto;
 }
 
 .pricing-card {
@@ -899,16 +899,17 @@ code, pre, .mono {
 
 .plan-badge {
   position: absolute;
-  top: -14px;
+  top: -15px;
   right: 32px;
   background: linear-gradient(135deg, var(--primary-cyan), var(--accent-blue));
   color: #ffffff;
   font-size: 0.78rem;
   font-weight: 800;
-  padding: 5px 14px;
+  padding: 6px 16px;
   border-radius: var(--radius-full);
   letter-spacing: 0.5px;
   box-shadow: 0 4px 14px var(--primary-glow);
+  white-space: nowrap;
 }
 
 .plan-name {
