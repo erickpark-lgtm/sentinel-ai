@@ -5,7 +5,7 @@ Compiles tamper-proof, cryptographically stamped audit evidence dossiers for AIC
 
 import hashlib
 import time
-from typing import Dict, Any
+from typing import Dict, Any, Optional
 
 class DossierCompiler:
     """
