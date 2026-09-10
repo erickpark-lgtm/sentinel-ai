@@ -192,6 +192,24 @@ document.addEventListener('DOMContentLoaded', () => {
     }
   }
 
+  const btnTriggerAllianceInline = document.getElementById('btn-trigger-alliance-inline');
+  if (btnTriggerAllianceInline && modalAlliance) {
+    btnTriggerAllianceInline.addEventListener('click', () => {
+      modalAlliance.style.display = 'flex';
+    });
+  }
+
+  const btnTriggerAiDesk = document.getElementById('btn-trigger-ai-desk');
+  const btnFooterAiDesk = document.getElementById('btn-footer-ai-desk');
+  function openChatDesk() {
+    if (chatWindowCard) {
+      chatWindowCard.style.display = 'flex';
+      if (chatInputField) chatInputField.focus();
+    }
+  }
+  if (btnTriggerAiDesk) btnTriggerAiDesk.addEventListener('click', openChatDesk);
+  if (btnFooterAiDesk) btnFooterAiDesk.addEventListener('click', openChatDesk);
+
   // ══════════════════════════════════════════════════════════════════════════════
   // AICPA AI Auditor Copilot (Floating Chatbot Engine)
   // ══════════════════════════════════════════════════════════════════════════════
