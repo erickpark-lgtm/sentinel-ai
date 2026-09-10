@@ -8,6 +8,7 @@ import os
 import urllib.request
 import urllib.error
 from typing import Dict, Any, Optional
+from engine.core.retry_utils import with_exponential_backoff
 
 class GitHubAuditor:
     """
@@ -19,6 +20,7 @@ class GitHubAuditor:
     def __init__(self, token: Optional[str] = None):
         self.token = token or os.environ.get("GITHUB_TOKEN")
 
+    @with_exponential_backoff(max_retries=3, base_delay=0.5, max_delay=10.0)
     def _make_request(self, endpoint: str) -> tuple[int, Dict[str, Any]]:
         url = f"{self.BASE_URL}/{endpoint.lstrip('/')}"
         headers = {
