@@ -9,6 +9,7 @@ Supports both local append-only JSONL files and AWS DynamoDB persistent serverle
 import json
 import os
 import time
+import datetime
 import hashlib
 import urllib.request
 import urllib.error
@@ -105,7 +106,7 @@ class HeartbeatWatchdog:
             block_index = 0
             prev_hash = self.GENESIS_HASH
 
-        timestamp = time.strftime("%Y-%m-%d %H:%M:%S UTC", time.gmtime())
+        timestamp = datetime.datetime.now(datetime.timezone.utc).isoformat()
         raw_payload = f"{block_index}|{timestamp}|{target}|{checks_executed}|{self.daemon_id}|{prev_hash}"
         block_hash = hashlib.sha256(raw_payload.encode("utf-8")).hexdigest()
 
@@ -124,20 +125,57 @@ class HeartbeatWatchdog:
             dyn = self._get_dynamodb_resource()
             if dyn:
                 try:
-                    table = dyn.Table(self.dynamodb_table)
                     pk = f"LEDGER#{target}"
-                    # Write specific historical block
-                    table.put_item(Item={
-                        "pk": pk,
-                        "sk": f"BLOCK#{block_index:010d}",
-                        **block
-                    })
-                    # Update atomic LATEST pointer
-                    table.put_item(Item={
-                        "pk": pk,
-                        "sk": "LATEST",
-                        **block
-                    })
+                    db_meta = getattr(dyn, "meta", None)
+                    client = getattr(db_meta, "client", None) or (dyn if hasattr(dyn, "transact_write_items") else None)
+
+                    if client and hasattr(client, "transact_write_items"):
+                        # Atomic TransactWriteItems to eliminate race conditions and Merkle forks
+                        db_block = {
+                            "pk": {"S": pk},
+                            "block_index": {"N": str(block_index)},
+                            "timestamp": {"S": timestamp},
+                            "target": {"S": str(target)},
+                            "checks_executed": {"N": str(checks_executed)},
+                            "daemon_id": {"S": str(self.daemon_id)},
+                            "prev_hash": {"S": str(prev_hash)},
+                            "block_hash": {"S": str(block_hash)}
+                        }
+                        client.transact_write_items(
+                            TransactItems=[
+                                {
+                                    "Put": {
+                                        "TableName": self.dynamodb_table,
+                                        "Item": {
+                                            **db_block,
+                                            "sk": {"S": f"BLOCK#{block_index:010d}"}
+                                        },
+                                        "ConditionExpression": "attribute_not_exists(sk)"
+                                    }
+                                },
+                                {
+                                    "Put": {
+                                        "TableName": self.dynamodb_table,
+                                        "Item": {
+                                            **db_block,
+                                            "sk": {"S": "LATEST"}
+                                        },
+                                        "ConditionExpression": "attribute_not_exists(block_index) OR block_index = :expected_prev",
+                                        "ExpressionAttributeValues": {
+                                            ":expected_prev": {"N": str(block_index - 1)}
+                                        }
+                                    }
+                                }
+                            ]
+                        )
+                    elif hasattr(dyn, "Table"):
+                        table = dyn.Table(self.dynamodb_table)
+                        table.put_item(Item={"pk": pk, "sk": f"BLOCK#{block_index:010d}", **block})
+                        table.put_item(Item={"pk": pk, "sk": "LATEST", **block})
+                except ClientError as ce:
+                    if "ConditionalCheckFailed" in str(ce):
+                        raise IOError(f"DynamoDB concurrency conflict: Merkle chain fork prevented on {target}.") from ce
+                    pass
                 except Exception:
                     pass
 

@@ -15,6 +15,51 @@ try:
 except ImportError:
     boto3 = None
 
+def verify_chain_continuity(blocks: list[Dict[str, Any]]) -> tuple[bool, list[str]]:
+    """
+    Validates cryptographic chain continuity across sorted blocks (AICPA AT-C 205).
+    Enforces sequential indexing, unbroken prev_hash Merkle links, and payload integrity.
+    """
+    if not blocks:
+        return False, ["No blocks available for verification."]
+
+    errors = []
+    # Sort blocks strictly by block_index ascending
+    sorted_blocks = sorted(blocks, key=lambda b: int(b.get("block_index", 0)))
+    expected_prev = "0" * 64  # Genesis Hash
+
+    for i, block in enumerate(sorted_blocks):
+        current_index = int(block.get("block_index", 0))
+        current_prev_hash = block.get("prev_hash")
+        current_hash = block.get("block_hash")
+
+        # 1. Index sequence continuity
+        if current_index != i:
+            errors.append(f"Index sequence mismatch at position {i}: expected {i}, found {current_index}")
+            return False, errors
+
+        # 2. Cryptographic chain continuity (prev_hash must match previous block's hash)
+        if current_prev_hash != expected_prev:
+            errors.append(
+                f"Chain break at block index {current_index}: "
+                f"expected prev_hash {expected_prev}, got {current_prev_hash}"
+            )
+            return False, errors
+
+        # 3. Cryptographic payload integrity re-calculation
+        raw_payload = f"{current_index}|{block.get('timestamp')}|{block.get('target')}|{block.get('checks_executed')}|{block.get('daemon_id')}|{current_prev_hash}"
+        recomputed = hashlib.sha256(raw_payload.encode("utf-8")).hexdigest()
+        if recomputed != current_hash:
+            errors.append(
+                f"Cryptographic payload tampering at block index {current_index}: "
+                f"recorded {current_hash}, computed {recomputed}"
+            )
+            return False, errors
+
+        expected_prev = current_hash
+
+    return True, []
+
 def lambda_handler(event: Dict[str, Any], context: Any) -> Dict[str, Any]:
     """
     AWS Lambda entry point for S3 Bucket Event Notifications.
@@ -48,45 +93,40 @@ def lambda_handler(event: Dict[str, Any], context: Any) -> Dict[str, Any]:
             # 2. Compute SHA-256 checksum of payload
             computed_hash = hashlib.sha256(content_bytes).hexdigest()
 
-            # 3. Verify chained integrity if object is a JSONL block
-            is_valid = True
+            # 3. Parse JSONL blocks and verify chained integrity
+            parsed_blocks = []
             lines = content_bytes.decode("utf-8").strip().split("\n")
-            
             for line in lines:
-                if not line.strip():
-                    continue
-                block = json.loads(line)
-                block_hash = block.get("block_hash")
-                raw_payload = f"{block.get('block_index')}|{block.get('timestamp')}|{block.get('target')}|{block.get('checks_executed')}|{block.get('daemon_id')}|{block.get('prev_hash')}"
-                recomputed = hashlib.sha256(raw_payload.encode("utf-8")).hexdigest()
+                if line.strip():
+                    parsed_blocks.append(json.loads(line))
 
-                if recomputed != block_hash:
-                    is_valid = False
-                    tamper_msg = f"Cryptographic tamper detected in {object_key} at block index {block.get('block_index')}"
-                    errors.append(tamper_msg)
+            is_valid, chain_errors = verify_chain_continuity(parsed_blocks)
+            if not is_valid:
+                errors.extend(chain_errors)
+                tamper_summary = "\n".join(chain_errors)
 
-                    # Trigger High-Priority Compliance Alarm via SNS
-                    if sns_client and alarm_topic_arn:
-                        sns_client.publish(
-                            TopicArn=alarm_topic_arn,
-                            Subject="🚨 CRITICAL: AICPA Audit Evidence Tamper Alert",
-                            Message=f"SentinelAI Automated Verifier detected hash mismatch:\n\nBucket: {bucket_name}\nObject: {object_key}\nExpected: {block_hash}\nComputed: {recomputed}"
-                        )
-                    break
-
-            # 4. Tag S3 Object with Compliance Seal
-            if is_valid and s3_client:
-                s3_client.put_object_tagging(
-                    Bucket=bucket_name,
-                    Key=object_key,
-                    Tagging={
-                        "TagSet": [
-                            {"Key": "ComplianceStatus", "Value": "VERIFIED_AT_C_205"},
-                            {"Key": "IntegrityHash", "Value": computed_hash[:16]},
-                            {"Key": "AuditorReady", "Value": "TRUE"}
-                        ]
-                    }
-                )
+                # Trigger High-Priority Compliance Alarm via SNS
+                if sns_client and alarm_topic_arn:
+                    sns_client.publish(
+                        TopicArn=alarm_topic_arn,
+                        Subject="🚨 CRITICAL: AICPA Audit Evidence Chain Tamper Alert",
+                        Message=f"SentinelAI Automated Verifier detected Merkle chain invalidation:\n\nBucket: {bucket_name}\nObject: {object_key}\nDetails:\n{tamper_summary}"
+                    )
+            else:
+                # 4. Tag S3 Object with Verified Compliance Seal
+                if s3_client:
+                    s3_client.put_object_tagging(
+                        Bucket=bucket_name,
+                        Key=object_key,
+                        Tagging={
+                            "TagSet": [
+                                {"Key": "ComplianceStatus", "Value": "VERIFIED_AT_C_205"},
+                                {"Key": "IntegrityHash", "Value": computed_hash[:16]},
+                                {"Key": "AuditorReady", "Value": "TRUE"},
+                                {"Key": "ChainBlocksVerified", "Value": str(len(parsed_blocks))}
+                            ]
+                        }
+                    )
                 verified_count += 1
 
         except Exception as e:

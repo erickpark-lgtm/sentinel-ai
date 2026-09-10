@@ -13,6 +13,17 @@ document.addEventListener('DOMContentLoaded', () => {
   const scoreBadge = document.getElementById('score-badge');
   const checklistContainer = document.getElementById('checklist-container');
   const presetChips = document.querySelectorAll('.preset-chip');
+
+  // Dynamic API Configuration (AICPA & Production Deployment Hardening)
+  const API_BASE_URL = (() => {
+    if (window.SENTINEL_API_URL) return window.SENTINEL_API_URL;
+    if (window.location.hostname === 'localhost' || window.location.hostname === '127.0.0.1') {
+      return window.location.port === '8090' ? '' : 'http://localhost:8090';
+    }
+    return window.location.origin.includes('https://') 
+      ? 'https://api.sentinelvciso.com' 
+      : 'http://localhost:8090';
+  })();
   
   // Checkout Modal elements
   const modalOverlay = document.getElementById('modal-overlay');
@@ -90,7 +101,7 @@ document.addEventListener('DOMContentLoaded', () => {
 
   async function fetchLiveAudit(repoKey) {
     try {
-      const resp = await fetch('http://localhost:8090/api/scan', {
+      const resp = await fetch(`${API_BASE_URL}/api/scan`, {
         method: 'POST',
         headers: { 'Content-Type': 'application/json' },
         body: JSON.stringify({ repo: repoKey })
@@ -256,7 +267,7 @@ document.addEventListener('DOMContentLoaded', () => {
       const currentRepo = repoInput.value.trim() || 'connex-system/core-backend';
 
       try {
-        const resp = await fetch('http://localhost:8090/api/dossier', {
+        const resp = await fetch(`${API_BASE_URL}/api/dossier`, {
           method: 'POST',
           headers: { 'Content-Type': 'application/json' },
           body: JSON.stringify({ repo: currentRepo })
@@ -319,7 +330,7 @@ document.addEventListener('DOMContentLoaded', () => {
       const orgName = rawRepo.split('/')[0].replace(/-/g, ' ').replace(/\b\w/g, l => l.toUpperCase());
 
       try {
-        const resp = await fetch('http://localhost:8090/api/policies', {
+        const resp = await fetch(`${API_BASE_URL}/api/policies`, {
           method: 'POST',
           headers: { 'Content-Type': 'application/json' },
           body: JSON.stringify({ org_name: orgName, format: 'html' })
@@ -374,7 +385,8 @@ document.addEventListener('DOMContentLoaded', () => {
   if (btnInviteAuditor && modalInviteAuditor) {
     btnInviteAuditor.addEventListener('click', () => {
       const currentRepo = (repoInput ? repoInput.value.trim() : '') || 'enterprise-org/core-backend';
-      const magicUrl = `auditor-portal.html?client=${encodeURIComponent(currentRepo)}&token=AUD-${Math.floor(10000 + Math.random() * 90000)}&dossier=SOC2-DOSSIER-2026Q3`;
+      const baseUrl = (window.location.origin && window.location.origin.includes('http')) ? window.location.origin : 'https://sentinelvciso.com';
+      const magicUrl = `${baseUrl}/auditor-portal.html?client=${encodeURIComponent(currentRepo)}&token=AUD-${Math.floor(10000 + Math.random() * 90000)}&dossier=SOC2-DOSSIER-2026Q3`;
       if (inviteMagicLink) inviteMagicLink.value = magicUrl;
       modalInviteAuditor.style.display = 'flex';
     });
@@ -454,7 +466,7 @@ document.addEventListener('DOMContentLoaded', () => {
       btnSimulateDrift.disabled = true;
 
       try {
-        const resp = await fetch('http://localhost:8090/api/drift/simulate', {
+        const resp = await fetch(`${API_BASE_URL}/api/drift/simulate`, {
           method: 'POST',
           headers: { 'Content-Type': 'application/json' },
           body: JSON.stringify({ repo: currentRepo })
@@ -508,7 +520,7 @@ document.addEventListener('DOMContentLoaded', () => {
       btnVerifyAuditorLedger.disabled = true;
 
       try {
-        const resp = await fetch('http://localhost:8090/api/auditor/verify', {
+        const resp = await fetch(`${API_BASE_URL}/api/auditor/verify`, {
           method: 'POST',
           headers: { 'Content-Type': 'application/json' },
           body: JSON.stringify({ doc_id: queryId })

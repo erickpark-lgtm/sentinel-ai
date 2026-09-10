@@ -56,6 +56,17 @@ document.addEventListener('DOMContentLoaded', () => {
     });
   }
 
+  // Dynamic API Configuration
+  const API_BASE_URL = (() => {
+    if (window.SENTINEL_API_URL) return window.SENTINEL_API_URL;
+    if (window.location.hostname === 'localhost' || window.location.hostname === '127.0.0.1') {
+      return window.location.port === '8090' ? '' : 'http://localhost:8090';
+    }
+    return window.location.origin.includes('https://') 
+      ? 'https://api.sentinelvciso.com' 
+      : 'http://localhost:8090';
+  })();
+
   // Verification Handler
   if (btnVerifyAuditorLedger) {
     btnVerifyAuditorLedger.addEventListener('click', async () => {
@@ -64,7 +75,7 @@ document.addEventListener('DOMContentLoaded', () => {
       btnVerifyAuditorLedger.disabled = true;
 
       try {
-        const resp = await fetch('http://localhost:8090/api/auditor/verify', {
+        const resp = await fetch(`${API_BASE_URL}/api/auditor/verify`, {
           method: 'POST',
           headers: { 'Content-Type': 'application/json' },
           body: JSON.stringify({ doc_id: queryId })
