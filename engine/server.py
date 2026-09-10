@@ -221,6 +221,25 @@ class AuditAPIHandler(BaseHTTPRequestHandler):
             self.end_headers()
             self.wfile.write(json.dumps(verification_response).encode("utf-8"))
 
+        elif parsed_path.path == "/api/leads/prospect":
+            content_len = int(self.headers.get("Content-Length", 0))
+            post_body = self.rfile.read(content_len).decode("utf-8")
+            try:
+                payload = json.loads(post_body)
+            except Exception:
+                payload = {}
+
+            target = payload.get("target", "enterprise-org/core-backend")
+            from core.outbound_lead_sentinel import OutboundLeadSentinel
+            sentinel = OutboundLeadSentinel()
+            prospect_result = sentinel.audit_and_qualify(target)
+
+            self.send_response(200)
+            self._set_cors_headers()
+            self.send_header("Content-Type", "application/json")
+            self.end_headers()
+            self.wfile.write(json.dumps(prospect_result).encode("utf-8"))
+
         else:
             self.send_response(404)
             self.end_headers()

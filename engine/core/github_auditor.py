@@ -8,7 +8,13 @@ import os
 import urllib.request
 import urllib.error
 from typing import Dict, Any, Optional
-from engine.core.retry_utils import with_exponential_backoff
+try:
+    from .retry_utils import with_exponential_backoff
+except (ImportError, ValueError):
+    try:
+        from core.retry_utils import with_exponential_backoff
+    except ImportError:
+        from engine.core.retry_utils import with_exponential_backoff
 
 class GitHubAuditor:
     """

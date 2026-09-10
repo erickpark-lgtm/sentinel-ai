@@ -1,0 +1,111 @@
+{
+  "timestamp": "2026-09-09T21:49:00Z",
+  "total_leads": 3,
+  "leads": [
+    {
+      "repo": "vodoge/vodoge-cloud",
+      "score": 57,
+      "lead_tier": "TIER_1_CRITICAL_NEED",
+      "urgency": "HIGH",
+      "failing_checks_count": 2,
+      "failing_checks": [
+        {
+          "code": "CC8.1",
+          "name": "Branch Protection & Peer Reviews",
+          "desc": "CRITICAL: 'main' has no branch protection rules. Direct unreviewed pushes permitted.",
+          "status": "FAIL"
+        },
+        {
+          "code": "CC6.1",
+          "name": "Security Policy & Governance Disclosure",
+          "desc": "Governance baseline partial. Missing SECURITY.md.",
+          "status": "WARN"
+        }
+      ],
+      "outreach_package": {
+        "subject": "\ud83d\udea8 Compliance Diagnostic: vodoge/vodoge-cloud scored 57/100 on SOC 2 Readiness (1-Click Fix Available)",
+        "target_repo": "vodoge/vodoge-cloud",
+        "target_org": "vodoge",
+        "score": 57,
+        "primary_gap_code": "CC8.1",
+        "remediation_cli": "# 1-Click SOC 2 CC8.1 Remediation Script for vodoge/vodoge-cloud\ngh api --method PUT \"repos/vodoge/vodoge-cloud/branches/main/protection\" \\\n  -f required_status_checks='{\"strict\":true,\"contexts\":[]}' \\\n  -f enforce_admins=true \\\n  -f required_pull_request_reviews='{\"dismiss_stale_reviews\":true,\"required_approving_review_count\":1}'",
+        "landing_url": "https://sentinelvciso.com/?repo=vodoge/vodoge-cloud#scanner",
+        "email_body_markdown": "Hi vodoge Engineering Team,\n\nWe recently ran an automated AICPA Common Criteria scan against public security indicators for **vodoge/vodoge-cloud** using SentinelAI.\n\nYour current SOC 2 Type 2 readiness score is **57/100**. \n\n### \ud83d\udd0d Key Audit Vulnerability Identified:\n* **Criterion:** [CC8.1] Branch Protection & Peer Reviews\n* **Observation:** CRITICAL: 'main' has no branch protection rules. Direct unreviewed pushes permitted.\n* **Enterprise Deal Risk:** Enterprise procurement teams typically reject vendor security reviews if pull request approval gates or dependency scanners are absent.\n\n### \u26a1 Immediate 1-Click Fix:\nYou can remediate this control right now using the GitHub CLI:\n\n```bash\n# 1-Click SOC 2 CC8.1 Remediation Script for vodoge/vodoge-cloud\ngh api --method PUT \"repos/vodoge/vodoge-cloud/branches/main/protection\" \\\n  -f required_status_checks='{\"strict\":true,\"contexts\":[]}' \\\n  -f enforce_admins=true \\\n  -f required_pull_request_reviews='{\"dismiss_stale_reviews\":true,\"required_approving_review_count\":1}'\n```\n\n### \ud83d\udcc4 Free Pre-Compiled Evidence Register:\nWe compiled a free, zero-trace SOC 2 evidence dossier for your repository:\n\ud83d\udc49 https://sentinelvciso.com/?repo=vodoge/vodoge-cloud#scanner\n\nBest regards,  \n**SentinelAI Autonomous vCISO Engine**  \n*Automated Continuous Compliance for High-Growth Engineering Teams*\n"
+      }
+    },
+    {
+      "repo": "muyengwa8391/pi-magic-docs",
+      "score": 35,
+      "lead_tier": "TIER_1_CRITICAL_NEED",
+      "urgency": "HIGH",
+      "failing_checks_count": 3,
+      "failing_checks": [
+        {
+          "code": "CC8.1",
+          "name": "Branch Protection & Peer Reviews",
+          "desc": "CRITICAL: 'main' has no branch protection rules. Direct unreviewed pushes permitted.",
+          "status": "FAIL"
+        },
+        {
+          "code": "CC7.1",
+          "name": "Vulnerability Management & CI/CD Security",
+          "desc": "Dependabot alerts active; CI/CD automated pipeline configuration recommended.",
+          "status": "WARN"
+        },
+        {
+          "code": "CC6.1",
+          "name": "Security Policy & Governance Disclosure",
+          "desc": "Missing formal SECURITY.md policy and software licensing declaration.",
+          "status": "FAIL"
+        }
+      ],
+      "outreach_package": {
+        "subject": "\ud83d\udea8 Compliance Diagnostic: muyengwa8391/pi-magic-docs scored 35/100 on SOC 2 Readiness (1-Click Fix Available)",
+        "target_repo": "muyengwa8391/pi-magic-docs",
+        "target_org": "muyengwa8391",
+        "score": 35,
+        "primary_gap_code": "CC8.1",
+        "remediation_cli": "# 1-Click SOC 2 CC8.1 Remediation Script for muyengwa8391/pi-magic-docs\ngh api --method PUT \"repos/muyengwa8391/pi-magic-docs/branches/main/protection\" \\\n  -f required_status_checks='{\"strict\":true,\"contexts\":[]}' \\\n  -f enforce_admins=true \\\n  -f required_pull_request_reviews='{\"dismiss_stale_reviews\":true,\"required_approving_review_count\":1}'",
+        "landing_url": "https://sentinelvciso.com/?repo=muyengwa8391/pi-magic-docs#scanner",
+        "email_body_markdown": "Hi muyengwa8391 Engineering Team,\n\nWe recently ran an automated AICPA Common Criteria scan against public security indicators for **muyengwa8391/pi-magic-docs** using SentinelAI.\n\nYour current SOC 2 Type 2 readiness score is **35/100**. \n\n### \ud83d\udd0d Key Audit Vulnerability Identified:\n* **Criterion:** [CC8.1] Branch Protection & Peer Reviews\n* **Observation:** CRITICAL: 'main' has no branch protection rules. Direct unreviewed pushes permitted.\n* **Enterprise Deal Risk:** Enterprise procurement teams typically reject vendor security reviews if pull request approval gates or dependency scanners are absent.\n\n### \u26a1 Immediate 1-Click Fix:\nYou can remediate this control right now using the GitHub CLI:\n\n```bash\n# 1-Click SOC 2 CC8.1 Remediation Script for muyengwa8391/pi-magic-docs\ngh api --method PUT \"repos/muyengwa8391/pi-magic-docs/branches/main/protection\" \\\n  -f required_status_checks='{\"strict\":true,\"contexts\":[]}' \\\n  -f enforce_admins=true \\\n  -f required_pull_request_reviews='{\"dismiss_stale_reviews\":true,\"required_approving_review_count\":1}'\n```\n\n### \ud83d\udcc4 Free Pre-Compiled Evidence Register:\nWe compiled a free, zero-trace SOC 2 evidence dossier for your repository:\n\ud83d\udc49 https://sentinelvciso.com/?repo=muyengwa8391/pi-magic-docs#scanner\n\nBest regards,  \n**SentinelAI Autonomous vCISO Engine**  \n*Automated Continuous Compliance for High-Growth Engineering Teams*\n"
+      }
+    },
+    {
+      "repo": "Wiry-glitch668/ai-landing-page-workflow",
+      "score": 47,
+      "lead_tier": "TIER_1_CRITICAL_NEED",
+      "urgency": "HIGH",
+      "failing_checks_count": 3,
+      "failing_checks": [
+        {
+          "code": "CC8.1",
+          "name": "Branch Protection & Peer Reviews",
+          "desc": "CRITICAL: 'main' has no branch protection rules. Direct unreviewed pushes permitted.",
+          "status": "FAIL"
+        },
+        {
+          "code": "CC7.1",
+          "name": "Vulnerability Management & CI/CD Security",
+          "desc": "Dependabot alerts active; CI/CD automated pipeline configuration recommended.",
+          "status": "WARN"
+        },
+        {
+          "code": "CC6.1",
+          "name": "Security Policy & Governance Disclosure",
+          "desc": "Governance baseline partial. Missing SECURITY.md.",
+          "status": "WARN"
+        }
+      ],
+      "outreach_package": {
+        "subject": "\ud83d\udea8 Compliance Diagnostic: Wiry-glitch668/ai-landing-page-workflow scored 47/100 on SOC 2 Readiness (1-Click Fix Available)",
+        "target_repo": "Wiry-glitch668/ai-landing-page-workflow",
+        "target_org": "Wiry-glitch668",
+        "score": 47,
+        "primary_gap_code": "CC8.1",
+        "remediation_cli": "# 1-Click SOC 2 CC8.1 Remediation Script for Wiry-glitch668/ai-landing-page-workflow\ngh api --method PUT \"repos/Wiry-glitch668/ai-landing-page-workflow/branches/main/protection\" \\\n  -f required_status_checks='{\"strict\":true,\"contexts\":[]}' \\\n  -f enforce_admins=true \\\n  -f required_pull_request_reviews='{\"dismiss_stale_reviews\":true,\"required_approving_review_count\":1}'",
+        "landing_url": "https://sentinelvciso.com/?repo=Wiry-glitch668/ai-landing-page-workflow#scanner",
+        "email_body_markdown": "Hi Wiry-glitch668 Engineering Team,\n\nWe recently ran an automated AICPA Common Criteria scan against public security indicators for **Wiry-glitch668/ai-landing-page-workflow** using SentinelAI.\n\nYour current SOC 2 Type 2 readiness score is **47/100**. \n\n### \ud83d\udd0d Key Audit Vulnerability Identified:\n* **Criterion:** [CC8.1] Branch Protection & Peer Reviews\n* **Observation:** CRITICAL: 'main' has no branch protection rules. Direct unreviewed pushes permitted.\n* **Enterprise Deal Risk:** Enterprise procurement teams typically reject vendor security reviews if pull request approval gates or dependency scanners are absent.\n\n### \u26a1 Immediate 1-Click Fix:\nYou can remediate this control right now using the GitHub CLI:\n\n```bash\n# 1-Click SOC 2 CC8.1 Remediation Script for Wiry-glitch668/ai-landing-page-workflow\ngh api --method PUT \"repos/Wiry-glitch668/ai-landing-page-workflow/branches/main/protection\" \\\n  -f required_status_checks='{\"strict\":true,\"contexts\":[]}' \\\n  -f enforce_admins=true \\\n  -f required_pull_request_reviews='{\"dismiss_stale_reviews\":true,\"required_approving_review_count\":1}'\n```\n\n### \ud83d\udcc4 Free Pre-Compiled Evidence Register:\nWe compiled a free, zero-trace SOC 2 evidence dossier for your repository:\n\ud83d\udc49 https://sentinelvciso.com/?repo=Wiry-glitch668/ai-landing-page-workflow#scanner\n\nBest regards,  \n**SentinelAI Autonomous vCISO Engine**  \n*Automated Continuous Compliance for High-Growth Engineering Teams*\n"
+      }
+    }
+  ]
+}

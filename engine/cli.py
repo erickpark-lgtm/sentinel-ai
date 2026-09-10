@@ -30,11 +30,38 @@ def main():
     parser.add_argument("--interval", type=int, default=60, help="Watch interval in seconds (default: 60)")
     parser.add_argument("--webhook", default=None, help="Slack or Discord webhook URL for drift alerts")
     parser.add_argument("--fix-script", default=None, help="Generate automated shell remediation script")
+    parser.add_argument("--prospect", action="store_true", help="Run autonomous outbound lead qualification and outreach generation")
+    parser.add_argument("--prospect-query", default="topic:saas", help="Search query for candidate discovery")
     args = parser.parse_args()
 
-    if not args.repo and not args.generate_policies:
+    if not args.repo and not args.generate_policies and not args.prospect:
         parser.print_help()
         sys.exit(1)
+
+    # Autonomous Outbound Lead Generation Mode
+    if args.prospect:
+        from core.outbound_lead_sentinel import OutboundLeadSentinel
+        sentinel = OutboundLeadSentinel(github_token=args.token)
+        print("\n" + "═" * 70)
+        print(" 🎯  SENTINEL AI : OUTBOUND PROSPECTING LEAD-GEN SENTINEL")
+        print("═" * 70)
+        if args.repo:
+            print(f"[*] Auditing prospect candidate: {args.repo}")
+            lead = sentinel.audit_and_qualify(args.repo)
+            pkg = lead["outreach_package"]
+            print(f"[✔] Prospect Score: {lead['score']}/100 | Tier: {lead['lead_tier']} | Urgency: {lead['urgency']}")
+            print(f"[*] Subject: {pkg['subject']}")
+            print(f"[*] 1-Click Fix:\n{pkg['remediation_cli']}")
+            print(f"\n[*] Outreach Email Draft:\n{pkg['email_body_markdown']}")
+        else:
+            print(f"[*] Discovering startup candidates matching: '{args.prospect_query}'...")
+            leads = sentinel.scan_pipeline(query=args.prospect_query, limit=3)
+            sentinel.export_pipeline_to_json(leads, "prospects_pipeline.json")
+            print(f"[✔] Discovered {len(leads)} qualified leads. Exported to prospects_pipeline.json\n")
+            for idx, l in enumerate(leads, 1):
+                print(f"    {idx}. {l['repo']} -> Score: {l['score']}/100 ({l['lead_tier']})")
+        print("═" * 70 + "\n")
+        return
 
     org_name = args.org_name
     if not org_name and args.repo:

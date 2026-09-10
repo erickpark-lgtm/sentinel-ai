@@ -76,6 +76,18 @@ document.addEventListener('DOMContentLoaded', () => {
     triggerScan(repo);
   });
 
+  // Autonomous Prospecting Landing Route: ?repo=owner/repo
+  const prospectUrlParams = new URLSearchParams(window.location.search);
+  const incomingRepo = prospectUrlParams.get('repo');
+  if (incomingRepo && repoInput) {
+    repoInput.value = incomingRepo;
+    setTimeout(() => {
+      const scannerSec = document.getElementById('scanner');
+      if (scannerSec) scannerSec.scrollIntoView({ behavior: 'smooth' });
+      triggerScan(incomingRepo);
+    }, 500);
+  }
+
   async function fetchLiveAudit(repoKey) {
     try {
       const resp = await fetch('http://localhost:8090/api/scan', {
