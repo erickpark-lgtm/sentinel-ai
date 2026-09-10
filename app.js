@@ -15,15 +15,17 @@ document.addEventListener('DOMContentLoaded', () => {
   const presetChips = document.querySelectorAll('.preset-chip');
 
   // Dynamic API Configuration (AICPA & Production Deployment Hardening)
-  const API_BASE_URL = (() => {
-    if (window.SENTINEL_API_URL) return window.SENTINEL_API_URL;
-    if (window.location.hostname === 'localhost' || window.location.hostname === '127.0.0.1') {
-      return window.location.port === '8090' ? '' : 'http://localhost:8090';
-    }
-    return window.location.origin.includes('https://') 
-      ? 'https://api.sentinelvciso.com' 
-      : 'http://localhost:8090';
-  })();
+  const API_BASE_URL = (window.SENTINEL_CONFIG && typeof window.SENTINEL_CONFIG.getApiBaseUrl === 'function')
+    ? window.SENTINEL_CONFIG.getApiBaseUrl()
+    : (() => {
+        if (window.SENTINEL_API_URL) return window.SENTINEL_API_URL;
+        if (window.location.hostname === 'localhost' || window.location.hostname === '127.0.0.1') {
+          return window.location.port === '8090' ? '' : 'http://localhost:8090';
+        }
+        return window.location.origin.includes('https://') 
+          ? 'https://api.sentinelvciso.com' 
+          : 'http://localhost:8090';
+      })();
   
   // Checkout Modal elements
   const modalOverlay = document.getElementById('modal-overlay');

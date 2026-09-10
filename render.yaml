@@ -1,0 +1,21 @@
+services:
+  - type: web
+    name: sentinel-ai-api
+    runtime: docker
+    plan: free
+    region: oregon
+    dockerfilePath: ./Dockerfile
+    healthCheckPath: /health
+    envVars:
+      - key: PORT
+        value: 8090
+      - key: GITHUB_TOKEN
+        sync: false
+      - key: AWS_REGION
+        value: us-east-1
+      - key: SENTINEL_DYNAMODB_TABLE
+        value: sentinel_audit_ledger
+      - key: AWS_ACCESS_KEY_ID
+        sync: false
+      - key: AWS_SECRET_ACCESS_KEY
+        sync: false

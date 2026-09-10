@@ -6,7 +6,10 @@ Runs standalone on Python 3 standard library.
 
 import json
 import urllib.parse
-from http.server import HTTPServer, BaseHTTPRequestHandler
+try:
+    from http.server import ThreadingHTTPServer as ServerClass, BaseHTTPRequestHandler
+except ImportError:
+    from http.server import HTTPServer as ServerClass, BaseHTTPRequestHandler
 import sys
 import os
 
@@ -256,10 +259,12 @@ class AuditAPIHandler(BaseHTTPRequestHandler):
             self.send_response(404)
             self.end_headers()
 
-def run_server(port=8090):
-    server_address = ("", port)
-    httpd = HTTPServer(server_address, AuditAPIHandler)
-    print(f"[*] SentinelAI Core Audit Engine API running at http://localhost:{port}")
+def run_server(port=None):
+    if port is None:
+        port = int(os.environ.get("PORT", 8090))
+    server_address = ("0.0.0.0", port)
+    httpd = ServerClass(server_address, AuditAPIHandler)
+    print(f"[*] SentinelAI Core Audit Engine API running on 0.0.0.0:{port}")
     try:
         httpd.serve_forever()
     except KeyboardInterrupt:
@@ -267,7 +272,7 @@ def run_server(port=8090):
         httpd.server_close()
 
 if __name__ == "__main__":
-    port = 8090
+    port = int(os.environ.get("PORT", 8090))
     if len(sys.argv) > 1:
         port = int(sys.argv[1])
     run_server(port)

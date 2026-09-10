@@ -1,0 +1,4 @@
+# SentinelAI Production Dependencies
+# AICPA SOC 2 Type 2 Autonomous vCISO Engine
+boto3>=1.34.0
+botocore>=1.34.0
