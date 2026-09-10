@@ -77,10 +77,15 @@ class TestDriftSentinel(unittest.TestCase):
 
     def test_remediation_script_generation(self):
         report = DriftSentinel.detect_drift(self.baseline_eval, self.degraded_eval)
-        script = DriftSentinel.generate_remediation_script(report)
+        script = DriftSentinel.generate_remediation_script(report, require_human_approval=True)
         self.assertIn("#!/usr/bin/env bash", script)
+        self.assertIn("HUMAN-IN-THE-LOOP APPROVAL REQUIRED", script)
         self.assertIn("gh api --method PUT", script)
         self.assertIn("repos/$REPO/branches/$BRANCH/protection", script)
+
+        # Test without human approval prompt
+        unattended_script = DriftSentinel.generate_remediation_script(report, require_human_approval=False)
+        self.assertNotIn("HUMAN-IN-THE-LOOP APPROVAL REQUIRED", unattended_script)
 
 if __name__ == "__main__":
     unittest.main()

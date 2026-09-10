@@ -4,3 +4,5 @@ __pycache__/
 .DS_Store
 soc2_policies/
 *.html.bak
+*.jsonl
+heartbeat_ledger.jsonl

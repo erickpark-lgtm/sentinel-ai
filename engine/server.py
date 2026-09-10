@@ -18,6 +18,7 @@ from core.score_calculator import ScoreCalculator
 from core.dossier_compiler import DossierCompiler
 from core.policy_generator import PolicyGenerator
 from core.drift_sentinel import DriftSentinel
+from core.heartbeat_watchdog import HeartbeatWatchdog
 
 class AuditAPIHandler(BaseHTTPRequestHandler):
 
@@ -74,7 +75,15 @@ class AuditAPIHandler(BaseHTTPRequestHandler):
             raw_data = auditor.audit_repository(repo)
             evaluated = ScoreCalculator.evaluate(raw_data)
 
-            html_doc = DossierCompiler.compile_dossier_html(evaluated, company_name=repo.split("/")[0])
+            watchdog = HeartbeatWatchdog()
+            watchdog.record_heartbeat(repo, checks_executed=len(evaluated.get("checks", [])))
+            continuity_data = watchdog.calculate_continuity_index()
+
+            html_doc = DossierCompiler.compile_dossier_html(
+                evaluated, 
+                company_name=repo.split("/")[0],
+                continuity_data=continuity_data
+            )
             self.send_response(200)
             self._set_cors_headers()
             self.send_header("Content-Type", "text/html; charset=utf-8")

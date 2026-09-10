@@ -7,6 +7,8 @@ import time
 import hashlib
 from typing import Dict, Any, List
 
+from .compliance_manifest import COMPLIANCE_MANIFEST, ComplianceManifest
+
 class PolicyGenerator:
     """
     Automated Policy-as-Code Generator for seed to series B tech startups.

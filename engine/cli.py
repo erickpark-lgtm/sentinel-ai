@@ -16,6 +16,7 @@ from core.score_calculator import ScoreCalculator
 from core.dossier_compiler import DossierCompiler
 from core.policy_generator import PolicyGenerator
 from core.drift_sentinel import DriftSentinel
+from core.heartbeat_watchdog import HeartbeatWatchdog
 
 def main():
     parser = argparse.ArgumentParser(description="SentinelAI Autonomous vCISO Compliance Scanner")
@@ -93,12 +94,22 @@ def main():
             for idx, rem in enumerate(evaluated["remediations"], 1):
                 print(f"    {idx}. {rem}")
 
-        # Compile Dossier
-        html_content = DossierCompiler.compile_dossier_html(evaluated, company_name=org_name)
+        # Heartbeat Watchdog Ledger
+        watchdog = HeartbeatWatchdog()
+        watchdog.record_heartbeat(args.repo, checks_executed=len(evaluated.get("checks", [])))
+        continuity_data = watchdog.calculate_continuity_index()
+
+        # Compile Dossier with Continuous Observation Proof
+        html_content = DossierCompiler.compile_dossier_html(
+            evaluated, 
+            company_name=org_name,
+            continuity_data=continuity_data
+        )
         with open(args.out, "w", encoding="utf-8") as f:
             f.write(html_content)
 
         print(f"\n[✔] CPA Evidence Dossier successfully generated at: {os.path.abspath(args.out)}")
+        print(f"    [Heartbeat Proof]: Continuity Index {continuity_data['continuity_index']} | Hash: {continuity_data.get('root_ledger_hash', '')[:20]}...")
 
         # Remediation Script Generation
         if args.fix_script:

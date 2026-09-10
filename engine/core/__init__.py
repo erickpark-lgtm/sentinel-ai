@@ -8,5 +8,16 @@ from .score_calculator import ScoreCalculator
 from .dossier_compiler import DossierCompiler
 from .policy_generator import PolicyGenerator
 from .drift_sentinel import DriftSentinel
+from .compliance_manifest import ComplianceManifest, COMPLIANCE_MANIFEST
+from .heartbeat_watchdog import HeartbeatWatchdog
 
-__all__ = ["GitHubAuditor", "ScoreCalculator", "DossierCompiler", "PolicyGenerator", "DriftSentinel"]
+__all__ = [
+    "GitHubAuditor",
+    "ScoreCalculator",
+    "DossierCompiler",
+    "PolicyGenerator",
+    "DriftSentinel",
+    "ComplianceManifest",
+    "COMPLIANCE_MANIFEST",
+    "HeartbeatWatchdog"
+]

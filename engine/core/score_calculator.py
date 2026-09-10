@@ -4,6 +4,7 @@ Maps raw infrastructure & Git telemetry to SOC 2 Common Criteria controls.
 """
 
 from typing import Dict, Any, List
+from .compliance_manifest import ComplianceManifest, COMPLIANCE_MANIFEST
 
 class ScoreCalculator:
     """
@@ -165,17 +166,9 @@ class ScoreCalculator:
         })
 
         # -------------------------------------------------------------
-        # Aggregate Classification
+        # Aggregate Classification (Synchronized with SSoT Manifest)
         # -------------------------------------------------------------
-        if score >= 90:
-            status = "SOC 2 Type 2 Audit Ready"
-            status_class = "tag-pass"
-        elif score >= 70:
-            status = "Moderate Audit Gap Detected"
-            status_class = "tag-warn"
-        else:
-            status = "Critical Audit Risk (Action Required)"
-            status_class = "tag-fail"
+        status, status_class = ComplianceManifest.determine_status(score)
 
         return {
             "score": score,

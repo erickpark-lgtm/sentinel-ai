@@ -209,9 +209,10 @@ class DriftSentinel:
             return (False, f"Error: {str(ex)}")
 
     @classmethod
-    def generate_remediation_script(cls, drift_report: Dict[str, Any], default_branch: str = "main") -> str:
+    def generate_remediation_script(cls, drift_report: Dict[str, Any], default_branch: str = "main", require_human_approval: bool = True) -> str:
         """
         Generates an executable Bash script using GitHub CLI ('gh') to fix identified regressions.
+        Enforces AICPA SOC 2 CC5.1 Separation of Duties via Human-in-the-Loop confirmation.
         """
         target = drift_report.get("target", "org/repo")
         lines = [
@@ -219,14 +220,30 @@ class DriftSentinel:
             "# ═════════════════════════════════════════════════════════════════════════",
             f"# SentinelAI Autonomous Remediation Script for: {target}",
             f"# Generated: {drift_report.get('timestamp')}",
+            "# Governance Standard: AICPA SOC 2 CC5.1 (Human-in-the-Loop Approval Gate)",
             "# ═════════════════════════════════════════════════════════════════════════",
             "set -euo pipefail",
             "",
-            "echo '[*] Executing SentinelAI Automated Fiduciary Remediation...'",
             f"REPO=\"{target}\"",
             f"BRANCH=\"{default_branch}\"",
             ""
         ]
+
+        if require_human_approval:
+            lines.extend([
+                "echo '========================================================================='",
+                "echo ' [!] HUMAN-IN-THE-LOOP APPROVAL REQUIRED (AICPA SOC 2 CC5.1 Gate)'",
+                "echo ' You are about to apply administrative branch protection controls to:'",
+                "echo \"     Repository: $REPO | Branch: $BRANCH\"",
+                "echo '========================================================================='",
+                "read -r -p 'Confirm application of compliance remediation? [y/N]: ' CONFIRM",
+                "if [[ ! \"$CONFIRM\" =~ ^[Yy]$ ]]; then",
+                "  echo '[X] Remediation cancelled by security administrator.'",
+                "  exit 1",
+                "fi",
+                "echo '[+] Authorization verified. Executing SentinelAI remediation...'",
+                ""
+            ])
 
         # Scan regressions to formulate fixes
         reg_codes = [r["code"] for r in drift_report.get("regressions", [])]
