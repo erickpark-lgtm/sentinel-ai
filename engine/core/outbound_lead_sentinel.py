@@ -189,5 +189,22 @@ Best regards,
         if dirname:
             os.makedirs(dirname, exist_ok=True)
         with open(filepath, "w", encoding="utf-8") as f:
-            json.dump({"timestamp": "2026-09-09T21:49:00Z", "total_leads": len(results), "leads": results}, f, indent=2)
+            json.dump({"timestamp": "2026-09-09T22:20:00Z", "total_leads": len(results), "leads": results}, f, indent=2)
         return filepath
+
+if __name__ == "__main__":
+    import argparse
+    parser = argparse.ArgumentParser(description="SentinelAI Outbound Lead-Gen Sentinel")
+    parser.add_argument("--query", default="topic:saas stars:50..1000", help="GitHub search query")
+    parser.add_argument("--limit", type=int, default=5, help="Number of prospect candidates")
+    parser.add_argument("--out", default="prospects_pipeline.json", help="Output JSON path")
+    args = parser.parse_args()
+
+    sentinel = OutboundLeadSentinel()
+    print(f"[*] Executing autonomous prospecting pipeline for query: '{args.query}' (limit: {args.limit})...")
+    leads = sentinel.scan_pipeline(query=args.query, limit=args.limit)
+    out_file = sentinel.export_pipeline_to_json(leads, filepath=args.out)
+    print(f"\n[✔] Successfully generated {len(leads)} qualified leads with 1-click remediation scripts!")
+    print(f"[✔] Pipeline saved to: {out_file}\n")
+    for lead in leads:
+        print(f"  • [{lead['lead_tier']}] {lead['repo']} -> SOC 2 Score: {lead['score']}/100 ({lead['urgency']} Urgency)")
