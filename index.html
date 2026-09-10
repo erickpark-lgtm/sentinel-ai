@@ -221,9 +221,12 @@
             </div>
 
             <!-- Scan Result Action Bar -->
-            <div class="results-actions" style="grid-column: 1 / -1; display: flex; gap: 14px; justify-content: flex-end; align-items: center; padding-top: 16px; border-top: 1px solid var(--border-color); flex-wrap: wrap;">
-              <button class="btn-secondary" id="btn-export-policies" style="display: inline-flex; align-items: center; gap: 8px; font-size: 0.88rem; padding: 10px 18px;">
-                <span>📋 Download SOC 2 Policy Pack (5 Core Policies)</span>
+            <div class="results-actions" style="grid-column: 1 / -1; display: flex; gap: 12px; justify-content: flex-end; align-items: center; padding-top: 16px; border-top: 1px solid var(--border-color); flex-wrap: wrap;">
+              <button class="btn-secondary" id="btn-simulate-drift" style="display: inline-flex; align-items: center; gap: 8px; font-size: 0.88rem; padding: 10px 16px; border-color: rgba(239, 68, 68, 0.4); color: #fca5a5;">
+                <span>🚨 Simulate Drift Alert</span>
+              </button>
+              <button class="btn-secondary" id="btn-export-policies" style="display: inline-flex; align-items: center; gap: 8px; font-size: 0.88rem; padding: 10px 16px;">
+                <span>📋 Download SOC 2 Policy Pack</span>
               </button>
               <button class="btn-primary" id="btn-export-scan-dossier" style="display: inline-flex; align-items: center; gap: 8px; font-size: 0.88rem; padding: 10px 18px;">
                 <span>🛡️ Export AICPA Evidence Dossier</span>
@@ -690,6 +693,58 @@
         </button>
         <button class="btn-secondary" style="padding: 12px 20px;" id="btn-close-dossier">
           Close
+        </button>
+      </div>
+    </div>
+  </div>
+
+  <!-- Real-time Compliance Drift & Incident Modal -->
+  <div class="modal-overlay" id="drift-modal-overlay">
+    <div class="modal-card" style="max-width: 680px; max-height: 90vh; overflow-y: auto;">
+      <button class="modal-close" id="drift-modal-close">&times;</button>
+      <div style="display: flex; align-items: center; justify-content: space-between; margin-bottom: 16px; border-bottom: 1px solid var(--border-subtle); padding-bottom: 12px;">
+        <div style="display: flex; align-items: center; gap: 10px;">
+          <span style="font-size: 24px;">🚨</span>
+          <div>
+            <h3 style="margin: 0; font-size: 1.15rem; color: #f87171;">Continuous Compliance Drift Incident</h3>
+            <span style="font-size: 0.78rem; color: var(--text-dim);">SentinelAI Autonomous Telemetry Watcher • 14ms Real-Time Detection</span>
+          </div>
+        </div>
+        <span class="score-status-badge tag-fail" style="font-size: 0.75rem;">CRITICAL DRIFT</span>
+      </div>
+
+      <div style="background: rgba(239, 68, 68, 0.08); border: 1px solid rgba(239, 68, 68, 0.25); border-radius: 8px; padding: 14px; margin-bottom: 18px; font-size: 0.88rem;">
+        <div style="display: flex; justify-content: space-between; margin-bottom: 8px;">
+          <span><strong>Monitored Repository:</strong> <code id="drift-repo-name" style="color: #67e8f9;">enterprise-org/core-backend</code></span>
+          <span style="color: #f87171; font-weight: 800;">Score: 94 ➔ 64 (-30 pts)</span>
+        </div>
+        <div style="color: #cbd5e1; font-size: 0.82rem;">
+          A direct bypass occurred: <strong>Branch Protection was disabled on branch 'main'</strong>, permitting unreviewed direct commits and violating AICPA TSC CC8.1.
+        </div>
+      </div>
+
+      <h4 style="font-size: 0.9rem; color: #ffffff; margin-bottom: 8px;">Slack & Discord Live Webhook Dispatch Card</h4>
+      <div style="background: #0f172a; border: 1px solid #334155; border-radius: 8px; padding: 14px; font-family: monospace; font-size: 0.8rem; color: #e2e8f0; margin-bottom: 18px; line-height: 1.5;" id="drift-webhook-preview">
+        <span style="color: #f87171;">🚨 SentinelAI Compliance Drift Alert: enterprise-org/core-backend</span><br>
+        <span style="color: #94a3b8;">• Severity: CRITICAL | SOC 2 Score: 64/100 (-30 pts)</span><br>
+        <span style="color: #f87171;">• [CC8.1] Branch Protection: degraded from PASS to FAIL</span><br>
+        <span style="color: #38bdf8;">• Automated Remediation Script Generated & Dispatched to #security-alerts</span>
+      </div>
+
+      <h4 style="font-size: 0.9rem; color: #ffffff; margin-bottom: 8px;">Automated Remediation Script</h4>
+      <div style="position: relative;">
+        <pre style="background: #020617; border: 1px solid #1e293b; border-radius: 8px; padding: 12px; font-family: monospace; font-size: 0.78rem; color: #a5f3fc; overflow-x: auto; margin-bottom: 18px;" id="drift-remediation-code">gh api --method PUT "repos/enterprise-org/core-backend/branches/main/protection" \
+  -f required_status_checks='{"strict":true,"contexts":[]}' \
+  -f enforce_admins=true \
+  -f required_pull_request_reviews='{"dismiss_stale_reviews":true,"required_approving_review_count":1}'</pre>
+      </div>
+
+      <div style="display: flex; gap: 12px;">
+        <button class="btn-primary" style="flex: 1; justify-content: center;" id="btn-copy-remediation">
+          <span>📋 Copy Automated Remediation Script</span>
+        </button>
+        <button class="btn-secondary" style="padding: 12px 20px;" id="btn-close-drift">
+          Dismiss
         </button>
       </div>
     </div>

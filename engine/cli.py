@@ -10,10 +10,12 @@ import os
 # Ensure package directory is on sys.path
 sys.path.insert(0, os.path.dirname(os.path.abspath(__file__)))
 
+import time
 from core.github_auditor import GitHubAuditor
 from core.score_calculator import ScoreCalculator
 from core.dossier_compiler import DossierCompiler
 from core.policy_generator import PolicyGenerator
+from core.drift_sentinel import DriftSentinel
 
 def main():
     parser = argparse.ArgumentParser(description="SentinelAI Autonomous vCISO Compliance Scanner")
@@ -23,6 +25,10 @@ def main():
     parser.add_argument("--generate-policies", action="store_true", help="Generate 5 institutional SOC 2 policies")
     parser.add_argument("--org-name", default=None, help="Organization name for policies")
     parser.add_argument("--out-dir", default="soc2_policies", help="Directory to save generated policies")
+    parser.add_argument("--watch", action="store_true", help="Run continuous monitoring daemon for drift")
+    parser.add_argument("--interval", type=int, default=60, help="Watch interval in seconds (default: 60)")
+    parser.add_argument("--webhook", default=None, help="Slack or Discord webhook URL for drift alerts")
+    parser.add_argument("--fix-script", default=None, help="Generate automated shell remediation script")
     args = parser.parse_args()
 
     if not args.repo and not args.generate_policies:
@@ -93,6 +99,46 @@ def main():
             f.write(html_content)
 
         print(f"\n[✔] CPA Evidence Dossier successfully generated at: {os.path.abspath(args.out)}")
+
+        # Remediation Script Generation
+        if args.fix_script:
+            dummy_baseline = {"score": 100, "target": args.repo, "checks": [{"code": c["code"], "name": c["name"], "status": "PASS", "desc": ""} for c in evaluated["checks"]]}
+            drift_rep = DriftSentinel.detect_drift(dummy_baseline, evaluated)
+            script_body = DriftSentinel.generate_remediation_script(drift_rep)
+            with open(args.fix_script, "w", encoding="utf-8") as f:
+                f.write(script_body)
+            os.chmod(args.fix_script, 0o755)
+            print(f"[✔] Executable Remediation Script saved to: {os.path.abspath(args.fix_script)}")
+
+        # Continuous Watch Daemon
+        if args.watch:
+            print(f"\n[⚡] SentinelAI Continuous Watch Mode Activated (Interval: {args.interval}s)")
+            print("[*] Press Ctrl+C to stop continuous monitoring daemon.")
+            baseline_eval = evaluated
+            try:
+                while True:
+                    time.sleep(args.interval)
+                    print(f"\n[*] [{time.strftime('%H:%M:%S')}] Polling continuous telemetry for {args.repo}...")
+                    curr_raw = auditor.audit_repository(args.repo)
+                    if curr_raw.get("success"):
+                        curr_eval = ScoreCalculator.evaluate(curr_raw)
+                        drift_report = DriftSentinel.detect_drift(baseline_eval, curr_eval)
+                        if drift_report["has_drift"]:
+                            print(f"[🚨] COMPLIANCE DRIFT DETECTED! Delta: {drift_report['score_delta']} pts | Severity: {drift_report['severity']}")
+                            for r in drift_report["regressions"]:
+                                print(f"     -> REGRESSION [{r['code']}]: {r['from_status']} -> {r['to_status']} ({r['name']})")
+                            
+                            if args.webhook:
+                                print(f"[*] Dispatching webhook alert to: {args.webhook}")
+                                slack_msg = DriftSentinel.build_slack_payload(drift_report)
+                                ok, status = DriftSentinel.dispatch_webhook(args.webhook, slack_msg)
+                                print(f"    [Webhook Dispatch]: {status}")
+                            
+                            baseline_eval = curr_eval
+                        else:
+                            print("[✔] Infrastructure controls stable. Zero compliance drift.")
+            except KeyboardInterrupt:
+                print("\n[!] Watch daemon terminated by user.")
 
     print("═" * 70 + "\n")
 

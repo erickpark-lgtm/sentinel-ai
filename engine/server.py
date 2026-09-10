@@ -17,6 +17,7 @@ from core.github_auditor import GitHubAuditor
 from core.score_calculator import ScoreCalculator
 from core.dossier_compiler import DossierCompiler
 from core.policy_generator import PolicyGenerator
+from core.drift_sentinel import DriftSentinel
 
 class AuditAPIHandler(BaseHTTPRequestHandler):
 
@@ -110,6 +111,65 @@ class AuditAPIHandler(BaseHTTPRequestHandler):
                 self.send_header("Content-Disposition", f'attachment; filename="SentinelAI_SOC2_PolicyPack_{safe_name}.html"')
                 self.end_headers()
                 self.wfile.write(html_doc.encode("utf-8"))
+
+        elif parsed_path.path == "/api/drift/simulate":
+            content_len = int(self.headers.get("Content-Length", 0))
+            post_body = self.rfile.read(content_len).decode("utf-8")
+            try:
+                payload = json.loads(post_body)
+            except Exception:
+                payload = {}
+
+            repo = payload.get("repo", "enterprise-org/core-backend")
+            webhook_url = payload.get("webhook_url")
+
+            # Create baseline evaluation (passing)
+            baseline_eval = {
+                "score": 94,
+                "target": repo,
+                "checks": [
+                    {"code": "CC8.1", "name": "Branch Protection & Peer Reviews", "desc": "Protected branch with required reviews", "status": "PASS"},
+                    {"code": "CC6.1", "name": "Identity & Access Management (MFA)", "desc": "MFA enforced", "status": "PASS"},
+                    {"code": "CC7.1", "name": "Vulnerability Management", "desc": "0 critical CVEs", "status": "PASS"}
+                ],
+                "remediations": []
+            }
+
+            # Simulate sudden drift (branch protection removed, CVE entered)
+            drifted_eval = {
+                "score": 64,
+                "target": repo,
+                "checks": [
+                    {"code": "CC8.1", "name": "Branch Protection & Peer Reviews", "desc": "CRITICAL: Branch protection disabled; unreviewed merges allowed.", "status": "FAIL"},
+                    {"code": "CC6.1", "name": "Identity & Access Management (MFA)", "desc": "MFA enforced", "status": "PASS"},
+                    {"code": "CC7.1", "name": "Vulnerability Management", "desc": "WARN: 2 High severity CVEs detected in dependencies.", "status": "WARN"}
+                ],
+                "remediations": ["gh api --method PUT repos/:owner/:repo/branches/main/protection", "npm audit fix"]
+            }
+
+            drift_report = DriftSentinel.detect_drift(baseline_eval, drifted_eval)
+            slack_payload = DriftSentinel.build_slack_payload(drift_report)
+            discord_payload = DriftSentinel.build_discord_payload(drift_report)
+            remediation_script = DriftSentinel.generate_remediation_script(drift_report)
+
+            dispatch_status = None
+            if webhook_url:
+                success, msg = DriftSentinel.dispatch_webhook(webhook_url, slack_payload)
+                dispatch_status = {"dispatched": success, "message": msg}
+
+            response_data = {
+                "drift_report": drift_report,
+                "slack_payload": slack_payload,
+                "discord_payload": discord_payload,
+                "remediation_script": remediation_script,
+                "dispatch_status": dispatch_status
+            }
+
+            self.send_response(200)
+            self._set_cors_headers()
+            self.send_header("Content-Type", "application/json")
+            self.end_headers()
+            self.wfile.write(json.dumps(response_data).encode("utf-8"))
 
         else:
             self.send_response(404)

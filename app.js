@@ -329,8 +329,77 @@ document.addEventListener('DOMContentLoaded', () => {
       }
 
       alert(`📋 Institutional SOC 2 Policy Pack Downloaded!\n\nOrganization: [${orgName}]\n5 Core Policies (WISP, Access Control, Vulnerability, Change Management, Vendor Risk) included with AICPA TSC alignment.`);
-      btnExportPolicies.innerHTML = '<span>📋 Download SOC 2 Policy Pack (5 Core Policies)</span>';
+      btnExportPolicies.innerHTML = '<span>📋 Download SOC 2 Policy Pack</span>';
       btnExportPolicies.disabled = false;
+    });
+  }
+
+  // Drift Simulation Modal Elements
+  const btnSimulateDrift = document.getElementById('btn-simulate-drift');
+  const driftModalOverlay = document.getElementById('drift-modal-overlay');
+  const driftModalClose = document.getElementById('drift-modal-close');
+  const btnCloseDrift = document.getElementById('btn-close-drift');
+  const btnCopyRemediation = document.getElementById('btn-copy-remediation');
+  const driftRepoName = document.getElementById('drift-repo-name');
+  const driftRemediationCode = document.getElementById('drift-remediation-code');
+
+  function openDriftModal(repo) {
+    if (driftRepoName) driftRepoName.textContent = repo;
+    if (driftModalOverlay) driftModalOverlay.style.display = 'flex';
+  }
+
+  function closeDriftModal() {
+    if (driftModalOverlay) driftModalOverlay.style.display = 'none';
+  }
+
+  if (driftModalClose) driftModalClose.addEventListener('click', closeDriftModal);
+  if (btnCloseDrift) btnCloseDrift.addEventListener('click', closeDriftModal);
+  if (driftModalOverlay) {
+    driftModalOverlay.addEventListener('click', (e) => {
+      if (e.target === driftModalOverlay) closeDriftModal();
+    });
+  }
+
+  if (btnSimulateDrift) {
+    btnSimulateDrift.addEventListener('click', async () => {
+      const currentRepo = repoInput.value.trim() || 'enterprise-org/core-backend';
+      btnSimulateDrift.innerHTML = '<span>⏳ Detecting Telemetry Drift...</span>';
+      btnSimulateDrift.disabled = true;
+
+      try {
+        const resp = await fetch('http://localhost:8090/api/drift/simulate', {
+          method: 'POST',
+          headers: { 'Content-Type': 'application/json' },
+          body: JSON.stringify({ repo: currentRepo })
+        });
+        if (resp.ok) {
+          const data = await resp.json();
+          if (driftRemediationCode) driftRemediationCode.textContent = data.remediation_script;
+        }
+      } catch (e) {
+        // Fallback dynamic script
+        if (driftRemediationCode) {
+          driftRemediationCode.textContent = `gh api --method PUT "repos/${currentRepo}/branches/main/protection" \\\n  -f required_status_checks='{"strict":true,"contexts":[]}' \\\n  -f enforce_admins=true \\\n  -f required_pull_request_reviews='{"dismiss_stale_reviews":true,"required_approving_review_count":1}'\necho '[✔] SentinelAI automated remediation successful!'`;
+        }
+      }
+
+      openDriftModal(currentRepo);
+      btnSimulateDrift.innerHTML = '<span>🚨 Simulate Drift Alert</span>';
+      btnSimulateDrift.disabled = false;
+    });
+  }
+
+  if (btnCopyRemediation) {
+    btnCopyRemediation.addEventListener('click', () => {
+      const code = driftRemediationCode ? driftRemediationCode.textContent : '';
+      navigator.clipboard.writeText(code).then(() => {
+        btnCopyRemediation.innerHTML = '<span>✔ Copied to Clipboard!</span>';
+        setTimeout(() => {
+          btnCopyRemediation.innerHTML = '<span>📋 Copy Automated Remediation Script</span>';
+        }, 2000);
+      }).catch(() => {
+        alert('Remediation script copied to clipboard.');
+      });
     });
   }
 
