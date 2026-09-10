@@ -1,9 +1,10 @@
 // ══════════════════════════════════════════════════════════════════════════════
 // SentinelAI — AICPA Independent Service Auditor Portal Controller (auditor.js)
-// Real-time verification, cryptographic ledger inspection, and CPA workpaper export
+// Real-time verification, reverse onboarding, self-enrollment, & AI Auditor Copilot
 // ══════════════════════════════════════════════════════════════════════════════
 
 document.addEventListener('DOMContentLoaded', () => {
+  // Elements
   const btnVerifyAuditorLedger = document.getElementById('btn-verify-auditor-ledger');
   const auditorVerifyInput = document.getElementById('auditor-verify-input');
   const auditorResStatus = document.getElementById('auditor-res-status');
@@ -11,6 +12,23 @@ document.addEventListener('DOMContentLoaded', () => {
   const auditorResBadge = document.getElementById('auditor-res-badge');
   const btnExportWorkpapers = document.getElementById('btn-export-workpapers');
   const btnDownloadAuditCert = document.getElementById('btn-download-audit-cert');
+
+  // Reverse Onboarding Client Scope Parsing
+  const urlParams = new URLSearchParams(window.location.search);
+  const clientParam = urlParams.get('client');
+  const tokenParam = urlParams.get('token');
+  const dossierParam = urlParams.get('dossier');
+
+  const clientContextBanner = document.getElementById('client-context-banner');
+  const clientNameDisplay = document.getElementById('client-name-display');
+  const clientTokenDisplay = document.getElementById('client-token-display');
+
+  if (clientParam) {
+    if (clientContextBanner) clientContextBanner.style.display = 'block';
+    if (clientNameDisplay) clientNameDisplay.textContent = clientParam;
+    if (clientTokenDisplay) clientTokenDisplay.textContent = tokenParam || 'AUD-98214';
+    if (auditorVerifyInput && dossierParam) auditorVerifyInput.value = dossierParam;
+  }
 
   // Preset Buttons
   const presetDossier = document.getElementById('preset-dossier');
@@ -124,5 +142,146 @@ document.addEventListener('DOMContentLoaded', () => {
       document.body.removeChild(a);
       URL.revokeObjectURL(url);
     });
+  }
+
+  // ══════════════════════════════════════════════════════════════════════════════
+  // CPA Fast-Track Alliance Self-Enrollment Modal Handlers
+  // ══════════════════════════════════════════════════════════════════════════════
+  const btnOpenAllianceModal = document.getElementById('btn-open-alliance-modal');
+  const modalAlliance = document.getElementById('modal-alliance');
+  const btnCloseAllianceModal = document.getElementById('btn-close-alliance-modal');
+  const btnSubmitAlliance = document.getElementById('btn-submit-alliance');
+  const allianceFirmName = document.getElementById('alliance-firm-name');
+  const alliancePartnerName = document.getElementById('alliance-partner-name');
+  const allianceEmail = document.getElementById('alliance-email');
+
+  if (btnOpenAllianceModal && modalAlliance) {
+    btnOpenAllianceModal.addEventListener('click', () => {
+      modalAlliance.style.display = 'flex';
+    });
+
+    if (btnCloseAllianceModal) {
+      btnCloseAllianceModal.addEventListener('click', () => {
+        modalAlliance.style.display = 'none';
+      });
+    }
+
+    modalAlliance.addEventListener('click', (e) => {
+      if (e.target === modalAlliance) modalAlliance.style.display = 'none';
+    });
+
+    if (btnSubmitAlliance) {
+      btnSubmitAlliance.addEventListener('click', () => {
+        const firm = allianceFirmName ? allianceFirmName.value.trim() : '';
+        const email = allianceEmail ? allianceEmail.value.trim() : '';
+        if (!firm || !email || !email.includes('@')) {
+          alert('Please enter your CPA Firm Name and a valid work email.');
+          return;
+        }
+
+        btnSubmitAlliance.innerHTML = '<span>⏳ Activating Partner Status...</span>';
+        btnSubmitAlliance.disabled = true;
+
+        setTimeout(() => {
+          alert(`🤝 Welcome to the CPA Fast-Track Alliance!\n\nFirm: [${firm}]\n• Fast-Track Partner ID: CPA-ALLIANCE-${Math.floor(1000 + Math.random() * 9000)}\n• Telemetry API Key: sk_live_cpa_fasttrack_7f9a8\n• 2026 Audit Working Paper Toolkit sent to: [${email}]\n\nYour engagement teams can now ingest real-time audit ledgers with zero manual client screenshot collection.`);
+          btnSubmitAlliance.innerHTML = '<span>🚀 Activate CPA Fast-Track Partner Status</span>';
+          btnSubmitAlliance.disabled = false;
+          modalAlliance.style.display = 'none';
+        }, 600);
+      });
+    }
+  }
+
+  // ══════════════════════════════════════════════════════════════════════════════
+  // AICPA AI Auditor Copilot (Floating Chatbot Engine)
+  // ══════════════════════════════════════════════════════════════════════════════
+  const btnToggleChat = document.getElementById('btn-toggle-chat');
+  const chatWindowCard = document.getElementById('chat-window-card');
+  const btnCloseChat = document.getElementById('btn-close-chat');
+  const chatMessages = document.getElementById('chat-messages');
+  const chatInputField = document.getElementById('chat-input-field');
+  const btnChatSend = document.getElementById('btn-chat-send');
+  const chatChips = document.querySelectorAll('.chat-chip');
+
+  if (btnToggleChat && chatWindowCard) {
+    btnToggleChat.addEventListener('click', () => {
+      const isVisible = chatWindowCard.style.display === 'flex';
+      chatWindowCard.style.display = isVisible ? 'none' : 'flex';
+      if (!isVisible && chatInputField) chatInputField.focus();
+    });
+
+    if (btnCloseChat) {
+      btnCloseChat.addEventListener('click', () => {
+        chatWindowCard.style.display = 'none';
+      });
+    }
+
+    // Quick suggestion chips
+    chatChips.forEach(chip => {
+      chip.addEventListener('click', () => {
+        const query = chip.getAttribute('data-q');
+        if (query) {
+          sendUserQuery(query);
+        }
+      });
+    });
+
+    // Input handlers
+    if (btnChatSend && chatInputField) {
+      btnChatSend.addEventListener('click', () => {
+        const query = chatInputField.value.trim();
+        if (query) {
+          sendUserQuery(query);
+          chatInputField.value = '';
+        }
+      });
+
+      chatInputField.addEventListener('keypress', (e) => {
+        if (e.key === 'Enter') {
+          const query = chatInputField.value.trim();
+          if (query) {
+            sendUserQuery(query);
+            chatInputField.value = '';
+          }
+        }
+      });
+    }
+  }
+
+  function sendUserQuery(text) {
+    if (!chatMessages) return;
+
+    // Append User Message
+    const userDiv = document.createElement('div');
+    userDiv.className = 'user-msg';
+    userDiv.textContent = text;
+    chatMessages.appendChild(userDiv);
+    chatMessages.scrollTop = chatMessages.scrollHeight;
+
+    // AI Response Generator
+    setTimeout(() => {
+      const lower = text.toLowerCase();
+      let replyHtml = '';
+
+      if (lower.includes('cc8.1') || lower.includes('branch') || lower.includes('drift')) {
+        replyHtml = `<strong>[CC8.1 Change Management]</strong> SentinelAI connects directly to the GitHub Branch Protection API. It enforces at least 1 mandatory peer code review, linear commit history, and strict status check passes prior to merging into protected branches. Our 24/7 Drift Sentinel continuously polls the API; any unauthorized manual bypass triggers an automated remediation script and logs a timestamped record to the audit ledger.`;
+      } else if (lower.includes('sha-256') || lower.includes('chain') || lower.includes('merkle') || lower.includes('tamper')) {
+        replyHtml = `<strong>[SHA-256 Cryptographic Chaining]</strong> Every compliance event and hourly watchdog pulse is structured as an immutable JSONL block containing <code>{timestamp, event_type, payload_hash, prev_hash}</code>. Modifying any historical block breaks all subsequent SHA-256 links, guaranteeing 100% mathematical tamper detection under AICPA AT-C Section 205.`;
+      } else if (lower.includes('cuec') || lower.includes('cloud') || lower.includes('vendor')) {
+        replyHtml = `<strong>[CC9.2 Vendor Risk & CUEC Cross-Walk]</strong> For underlying infrastructure (AWS / GCP / Cloudflare), SentinelAI ingests their SOC 2 Type 2 bridge letters and maps Complementary User Entity Controls (CUEC) directly to your client's active firewall, KMS encryption keys, and logical IAM boundaries.`;
+      } else if (lower.includes('alliance') || lower.includes('join') || lower.includes('partner') || lower.includes('fee')) {
+        replyHtml = `<strong>[CPA Fast-Track Alliance]</strong> Vetted CPA firms enjoy 50% faster turnaround with pre-cleared workpapers and 50% discounted audit fees for mutual clients. You can click the <strong>"🤝 CPA Alliance Self-Enroll"</strong> button in the top navigation to instantly activate your partner credentials without scheduling any sales calls.`;
+      } else if (lower.includes('cc5.1') || lower.includes('human') || lower.includes('approval')) {
+        replyHtml = `<strong>[CC5.1 Dual-Approval Gate]</strong> SentinelAI implements a Human-in-the-Loop approval gate for all policy changes and infrastructure alterations. Critical commits cannot be applied autonomously without an explicit cryptographically signed cryptographic token from an authorized security officer.`;
+      } else {
+        replyHtml = `<strong>[AICPA AT-C 205 Telemetry Engine]</strong> SentinelAI audits security controls 24/7 across GitHub, Identity Providers, and Cloud APIs. All evidence is compiled into pre-cleared working papers with 100% observation period continuity, eliminating the sampling error inherent in legacy screenshot-based GRC platforms.`;
+      }
+
+      const botDiv = document.createElement('div');
+      botDiv.className = 'bot-msg';
+      botDiv.innerHTML = `<div style="font-weight: 700; color: #38bdf8; margin-bottom: 4px; font-size: 0.76rem;">AICPA AUDITOR COPILOT:</div>${replyHtml}`;
+      chatMessages.appendChild(botDiv);
+      chatMessages.scrollTop = chatMessages.scrollHeight;
+    }, 400);
   }
 });

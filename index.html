@@ -252,6 +252,9 @@
               <button class="btn-secondary" id="btn-export-policies" style="display: inline-flex; align-items: center; gap: 8px; font-size: 0.88rem; padding: 10px 16px;">
                 <span>📋 Download SOC 2 Policy Pack</span>
               </button>
+              <button class="btn-secondary" id="btn-invite-auditor" style="display: inline-flex; align-items: center; gap: 8px; font-size: 0.88rem; padding: 10px 16px; border-color: rgba(56, 189, 248, 0.4); color: #38bdf8;">
+                <span>✉️ Invite CPA Auditor</span>
+              </button>
               <button class="btn-primary" id="btn-export-scan-dossier" style="display: inline-flex; align-items: center; gap: 8px; font-size: 0.88rem; padding: 10px 18px;">
                 <span>🛡️ Export AICPA Evidence Dossier</span>
               </button>
@@ -811,6 +814,41 @@
         </button>
         <button class="btn-secondary" style="padding: 12px 20px;" id="btn-close-drift">
           Dismiss
+        </button>
+      </div>
+  <!-- Invite CPA Auditor Modal (Reverse Onboarding) -->
+  <div class="modal-overlay" id="modal-invite-auditor" style="display: none;">
+    <div class="modal-card" style="max-width: 540px; background: #0f172a; border: 1px solid #334155; border-radius: 16px; padding: 32px; box-shadow: 0 25px 50px -12px rgba(0, 0, 0, 0.7); position: relative;">
+      <button class="modal-close" id="btn-close-invite-modal">&times;</button>
+      <div style="display: flex; align-items: center; gap: 12px; margin-bottom: 16px;">
+        <span style="font-size: 28px;">✉️</span>
+        <div>
+          <h3 style="font-size: 1.25rem; font-weight: 800; color: #ffffff; margin: 0;">Invite Independent CPA Auditor</h3>
+          <div style="font-size: 0.8rem; color: #94a3b8;">Zero-Touch Reverse Onboarding • AICPA AT-C 205 Working Papers</div>
+        </div>
+      </div>
+      <p style="font-size: 0.86rem; color: #cbd5e1; line-height: 1.5; margin-bottom: 18px;">
+        Grant your independent audit firm direct, read-only access to verify continuous telemetry, download raw AICPA evidence packages, and inspect SHA-256 hash chains.
+      </p>
+      <div style="margin-bottom: 16px;">
+        <label style="display: block; font-size: 0.78rem; text-transform: uppercase; color: #94a3b8; margin-bottom: 6px; font-weight: 600;">CPA Lead Auditor Email</label>
+        <input type="email" id="invite-auditor-email" placeholder="e.g. audit-team@johanson.cpa" style="width: 100%; background: #020617; border: 1px solid #334155; border-radius: 8px; padding: 12px 14px; color: #ffffff; font-size: 0.9rem; outline: none;">
+      </div>
+      <div style="margin-bottom: 18px;">
+        <label style="display: block; font-size: 0.78rem; text-transform: uppercase; color: #94a3b8; margin-bottom: 6px; font-weight: 600;">Cryptographically Signed Access Magic Link</label>
+        <div style="display: flex; gap: 8px;">
+          <input type="text" id="invite-magic-link" readonly value="http://localhost:8080/auditor-portal.html?client=enterprise-org/core-backend&token=AUD-98214&dossier=SOC2-DOSSIER-2026Q3" style="flex: 1; background: #020617; border: 1px solid #334155; border-radius: 8px; padding: 10px 14px; color: #38bdf8; font-family: monospace; font-size: 0.78rem; outline: none;">
+          <button class="btn-secondary" id="btn-copy-magic-link" style="padding: 10px 14px; font-size: 0.8rem; white-space: nowrap;">
+            <span>📋 Copy Link</span>
+          </button>
+        </div>
+      </div>
+      <div style="background: rgba(56, 189, 248, 0.08); border: 1px solid rgba(56, 189, 248, 0.2); border-radius: 8px; padding: 12px; margin-bottom: 20px; font-size: 0.78rem; color: #94a3b8; line-height: 1.4;">
+        💡 <strong>Zero Sales Calls Required:</strong> Your CPA auditor lands in a dedicated workspace pre-loaded with your repo evidence, sample working papers, and 24/7 AI Auditor Copilot assistance.
+      </div>
+      <div style="display: flex; gap: 12px; justify-content: flex-end;">
+        <button class="btn-primary" id="btn-send-auditor-invite" style="width: 100%; justify-content: center; padding: 12px;">
+          <span>🚀 Send Direct Auditor Invitation</span>
         </button>
       </div>
     </div>

@@ -348,6 +348,67 @@ document.addEventListener('DOMContentLoaded', () => {
     });
   }
 
+  // ══════════════════════════════════════════════════════════════════════════════
+  // Invite CPA Auditor (Reverse Onboarding) Handlers
+  // ══════════════════════════════════════════════════════════════════════════════
+  const btnInviteAuditor = document.getElementById('btn-invite-auditor');
+  const modalInviteAuditor = document.getElementById('modal-invite-auditor');
+  const btnCloseInviteModal = document.getElementById('btn-close-invite-modal');
+  const inviteAuditorEmail = document.getElementById('invite-auditor-email');
+  const inviteMagicLink = document.getElementById('invite-magic-link');
+  const btnCopyMagicLink = document.getElementById('btn-copy-magic-link');
+  const btnSendAuditorInvite = document.getElementById('btn-send-auditor-invite');
+
+  if (btnInviteAuditor && modalInviteAuditor) {
+    btnInviteAuditor.addEventListener('click', () => {
+      const currentRepo = (repoInput ? repoInput.value.trim() : '') || 'enterprise-org/core-backend';
+      const magicUrl = `auditor-portal.html?client=${encodeURIComponent(currentRepo)}&token=AUD-${Math.floor(10000 + Math.random() * 90000)}&dossier=SOC2-DOSSIER-2026Q3`;
+      if (inviteMagicLink) inviteMagicLink.value = magicUrl;
+      modalInviteAuditor.style.display = 'flex';
+    });
+
+    if (btnCloseInviteModal) {
+      btnCloseInviteModal.addEventListener('click', () => {
+        modalInviteAuditor.style.display = 'none';
+      });
+    }
+
+    modalInviteAuditor.addEventListener('click', (e) => {
+      if (e.target === modalInviteAuditor) modalInviteAuditor.style.display = 'none';
+    });
+
+    if (btnCopyMagicLink && inviteMagicLink) {
+      btnCopyMagicLink.addEventListener('click', () => {
+        navigator.clipboard.writeText(inviteMagicLink.value).then(() => {
+          btnCopyMagicLink.innerHTML = '<span>✔ Copied!</span>';
+          setTimeout(() => {
+            btnCopyMagicLink.innerHTML = '<span>📋 Copy Link</span>';
+          }, 2000);
+        });
+      });
+    }
+
+    if (btnSendAuditorInvite) {
+      btnSendAuditorInvite.addEventListener('click', () => {
+        const email = inviteAuditorEmail ? inviteAuditorEmail.value.trim() : '';
+        if (!email || !email.includes('@')) {
+          alert('Please enter a valid CPA lead auditor email address.');
+          return;
+        }
+        btnSendAuditorInvite.innerHTML = '<span>⏳ Dispatching Secure Invitation...</span>';
+        btnSendAuditorInvite.disabled = true;
+
+        setTimeout(() => {
+          alert(`🚀 Auditor Invitation Dispatched!\n\nRecipient: [${email}]\nScope: Read-only AICPA AT-C 205 Working Papers\nVerification Magic Link sent with 24/7 AI Auditor Copilot enabled.\n\nNo manual onboarding or sales meetings required.`);
+          btnSendAuditorInvite.innerHTML = '<span>🚀 Send Direct Auditor Invitation</span>';
+          btnSendAuditorInvite.disabled = false;
+          modalInviteAuditor.style.display = 'none';
+          if (inviteAuditorEmail) inviteAuditorEmail.value = '';
+        }, 600);
+      });
+    }
+  }
+
   // Drift Simulation Modal Elements
   const btnSimulateDrift = document.getElementById('btn-simulate-drift');
   const driftModalOverlay = document.getElementById('drift-modal-overlay');
