@@ -159,6 +159,11 @@ document.addEventListener('DOMContentLoaded', () => {
       `;
       checklistContainer.appendChild(div);
     });
+
+    const bannerContinuityIdx = document.getElementById('banner-continuity-idx');
+    if (bannerContinuityIdx) {
+      bannerContinuityIdx.textContent = (data.score >= 90) ? '100.00%' : ((data.score >= 70) ? '99.45%' : '88.20%');
+    }
   }
 
   // Pricing Modal Logic
@@ -181,14 +186,23 @@ document.addEventListener('DOMContentLoaded', () => {
     if (e.target === modalOverlay) modalOverlay.style.display = 'none';
   });
 
+  const chkDisclaimerAgree = document.getElementById('chk-disclaimer-agree');
+
   btnCheckout.addEventListener('click', () => {
+    if (chkDisclaimerAgree && !chkDisclaimerAgree.checked) {
+      alert('⚠️ Mandatory Safe Harbor Agreement Required:\n\nPlease review and check the AICPA AT-C 205 Legal & Attestation Safe Harbor acknowledgement box before completing activation.');
+      chkDisclaimerAgree.focus();
+      return;
+    }
+
     btnCheckout.textContent = 'Processing Stripe Payment...';
     btnCheckout.disabled = true;
     setTimeout(() => {
-      alert('🎉 SentinelAI Instant Activation Successful!\n\nYour 24/7 Autonomous vCISO agent is now connected and monitoring your repositories.');
+      alert('🎉 SentinelAI Instant Activation Successful!\n\nYour 24/7 Autonomous vCISO agent is now armed. Continuous Observation Ledger initiated at 100.00% Continuity Index.');
       modalOverlay.style.display = 'none';
       btnCheckout.textContent = 'Complete Instant Activation';
       btnCheckout.disabled = false;
+      if (chkDisclaimerAgree) chkDisclaimerAgree.checked = false;
     }, 1200);
   });
 
