@@ -10,9 +10,13 @@ from http.server import HTTPServer, BaseHTTPRequestHandler
 import sys
 import os
 
+# Ensure package directory is in python path
+sys.path.insert(0, os.path.dirname(os.path.abspath(__file__)))
+
 from core.github_auditor import GitHubAuditor
 from core.score_calculator import ScoreCalculator
 from core.dossier_compiler import DossierCompiler
+from core.policy_generator import PolicyGenerator
 
 class AuditAPIHandler(BaseHTTPRequestHandler):
 
@@ -76,6 +80,36 @@ class AuditAPIHandler(BaseHTTPRequestHandler):
             self.send_header("Content-Disposition", f'attachment; filename="SentinelAI_SOC2_Dossier_{repo.replace("/", "_")}.html"')
             self.end_headers()
             self.wfile.write(html_doc.encode("utf-8"))
+
+        elif parsed_path.path == "/api/policies":
+            content_len = int(self.headers.get("Content-Length", 0))
+            post_body = self.rfile.read(content_len).decode("utf-8")
+            try:
+                payload = json.loads(post_body)
+            except Exception:
+                payload = {}
+
+            org_name = payload.get("org_name", "Client Organization").strip() or "Client Organization"
+            ciso_name = payload.get("ciso_name", "Chief Information Security Officer").strip() or "Chief Information Security Officer"
+            req_format = payload.get("format", "html").lower()
+
+            policies = PolicyGenerator.generate_all_policies(org_name=org_name, ciso_name=ciso_name)
+
+            if req_format == "json":
+                self.send_response(200)
+                self._set_cors_headers()
+                self.send_header("Content-Type", "application/json")
+                self.end_headers()
+                self.wfile.write(json.dumps({"org_name": org_name, "policies": policies}).encode("utf-8"))
+            else:
+                html_doc = PolicyGenerator.compile_policy_pack_html(policies, org_name=org_name)
+                self.send_response(200)
+                self._set_cors_headers()
+                self.send_header("Content-Type", "text/html; charset=utf-8")
+                safe_name = org_name.replace(" ", "_").replace("/", "_")
+                self.send_header("Content-Disposition", f'attachment; filename="SentinelAI_SOC2_PolicyPack_{safe_name}.html"')
+                self.end_headers()
+                self.wfile.write(html_doc.encode("utf-8"))
 
         else:
             self.send_response(404)
