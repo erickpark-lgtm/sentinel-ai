@@ -4,9 +4,8 @@
  * and production custom domains (https://api.sentinelvciso.com).
  */
 window.SENTINEL_CONFIG = {
-  // If you deploy to Render (e.g. https://sentinel-ai-api.onrender.com) or Railway,
-  // replace this fallback or set it dynamically via CNAME:
-  CLOUD_API_URL: 'https://api.sentinelvciso.com',
+  // Render deployed cloud backend:
+  CLOUD_API_URL: 'https://sentinel-ai-1-2rt1.onrender.com',
 
   getApiBaseUrl: function() {
     // 1. URL Query Parameter override for instant zero-redeploy testing: ?api_url=https://...
